@@ -1,12 +1,12 @@
-const users = require('./../classes/pokemon');
-const talks = require('./../classes/types');
+const pokemon = require('./../classes/pokemon');
+const types = require('./../classes/types');
 
 module.exports = function(app){
 
   app.route('/pokemon')
-    .get(users.getAllUsers)
+    .get(pokemon.getPokemon)
 
   app.route('/types')
-    .get(talks.getAllTalks)
+    .get(types.getTypes)
 
 }

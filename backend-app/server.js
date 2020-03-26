@@ -4,7 +4,7 @@ const app = express();
 
 const port = 8080;
 
-var connection = require("./Connection");
+//var connection = require("./Connection");
 
 var corsOptions ={
   origin: '*',
