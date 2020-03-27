@@ -3,10 +3,10 @@ const types = require('./../classes/types');
 
 module.exports = function(app){
 
-  app.route('/pokemon')
+  app.route('/pokemon/:id')
     .get(pokemon.getPokemon)
 
-  app.route('/types')
-    .get(types.getTypes)
+  app.route('/types/:type')
+    .get(types.getType)
 
 }
