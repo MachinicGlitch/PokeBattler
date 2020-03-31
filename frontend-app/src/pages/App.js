@@ -1,20 +1,17 @@
 import React from 'react';
-//import BattleArea from './../components/BattleArea';
+import BattleArea from './../components/BattleArea';
+import Stats from './../components/Stats';
 import './../css/App.css';
 
 function App() {
   return (
     <div className="App">
       <div className="Border">
-        <p>
-         <b>Pokemon Battle Simulator</b>
-        </p>
+        <BattleArea />
       </div>
 
       <div className="Statistics">
-        <p>
-          Testing testing hello 
-        </p>
+        <Stats />
       </div>
 
 

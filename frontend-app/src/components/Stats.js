@@ -1,7 +1,7 @@
 import React from 'react';
 
-function BattleArea() {
+function Stats() {
     return <div>test test test</div>
 }
 
-export default BattleArea;
+export default Stats;
