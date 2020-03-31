@@ -4,6 +4,7 @@ import './../css/App.css';
 import TrainerBlue from '../assets/BluePlayerTrainer.png';
 import TrainerRed from '../assets/RedPlayerTrainer.png';
 import Puff from '../assets/Jigglypuff.png';
+import Explosion from '../assets/explosion.gif';
 
 
 function App() {
@@ -14,28 +15,27 @@ function App() {
          <b>Pokemon Battle Simulator</b> <br/>
          <div align="left">
            <div align="right">
-             <img src={TrainerRed} alt="Blue Trainer Sprite" hspace="0" vspace="0" width="400" height="400"></img>
+           <img src={Explosion} alt="Explosion that happens when a pokeball is opened"></img>
+             <img src={TrainerRed} alt="Red Trainer Sprite" hspace="0"  vspace="0" width="400" height="400"></img>
+             
            </div>
-          
-           <img src={TrainerBlue} alt="Red Trainer Sprite" hspace="30" width="250" height="230"></img>
            
+           <img src={TrainerBlue} alt="Blue Trainer Sprite" hspace="30" align="top" width="250" height="230"></img>
+           <img src={Explosion} alt="Explosion that happens when a pokeball is opened" hspace="30"></img>
          </div>
          
         </p>
       </div>
 
-      <div className="Trainers">
-        
-
-      </div>
-     
-
       <div className="Statistics">
         <p>
           Put the charts, graphs, and stats Here. 
+          
         </p>
       </div>
-
+      
+        
+      
 
     </div>
   );
