@@ -1,5 +1,6 @@
 import React from 'react';
-//import BattleArea from './../components/BattleArea';
+import BattleArea from './../components/BattleArea';
+import Stats from './../components/Stats';
 import './../css/App.css';
 import TrainerBlue from '../assets/BluePlayerTrainer.png';
 import TrainerRed from '../assets/RedPlayerTrainer.png';
@@ -10,6 +11,7 @@ function App() {
   return (
     <div className="App">
       <div className="Border">
+        <BattleArea />
         <p>
          <b>Pokemon Battle Simulator</b> <br/>
          <div align="left">
@@ -20,20 +22,14 @@ function App() {
            <img src={TrainerBlue} alt="Red Trainer Sprite" hspace="30" width="250" height="230"></img>
            
          </div>
-         
         </p>
       </div>
-
       <div className="Trainers">
-        
-
       </div>
      
 
       <div className="Statistics">
-        <p>
-          Put the charts, graphs, and stats Here. 
-        </p>
+        <Stats />
       </div>
 
 
