@@ -4,7 +4,6 @@ import Stats from './../components/Stats';
 import './../css/App.css';
 
 
-
 function App() {
   return (
     <div className="App">
