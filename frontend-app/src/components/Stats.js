@@ -1,7 +1,7 @@
 import React from 'react';
 
 function Stats() {
-    return <div>test test test</div>
+    return <div></div>
 }
 
 export default Stats;

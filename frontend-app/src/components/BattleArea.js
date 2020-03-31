@@ -1,5 +1,6 @@
 import React from 'react';
-import Timer from './Timer'
+import TrainerBlue from '../assets/BluePlayerTrainer.png';
+import TrainerRed from '../assets/RedPlayerTrainer.png';
 
 function BattleArea() {
     let [counter, setCounter] = React.useState(5);
@@ -23,8 +24,16 @@ function BattleArea() {
 
     return (
         <div>
-            <p> { winner ? "Blue Wins!" : "Red Wins!" } </p>
-
+            <p>
+                <p> { winner ? "Blue Wins!" : "Red Wins!" } </p>
+                <div align="left">
+                    <div align="right">
+                        <img src={TrainerRed} alt="Blue Trainer Sprite" hspace="0" vspace="0" width="400" height="400"></img>
+                    </div>
+                    <img src={TrainerBlue} alt="Red Trainer Sprite" hspace="30" width="250" height="230"></img>
+                </div>
+            </p>
+            
             <p>Countdown: {counter}</p>
         </div>
     )
