@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import './../css/BattleArea.css';
 import TrainerBlue from '../assets/BluePlayerTrainer.png';
 import TrainerRed from '../assets/RedPlayerTrainer.png';
 import Explosion from '../assets/explosion_noloop.gif';
@@ -11,7 +12,8 @@ import PokeBallTossBlue from '../assets/pokeball_toss_blue.gif';
 function BattleArea() {
 
     let [startRendering, setStartRendering] = React.useState(false);
-    let [counter, setCounter] = React.useState(5);
+    let [winMessage, setWinMessage] = React.useState('Get Ready Trainers!');
+    let [counter, setCounter] = React.useState(10);
     let [blueWins, setBlueWins] = React.useState(null);     // null = start of loading, true = blue wins, false = red wins
     let [BluePokemon, setBluePokemon] = React.useState({
          id: '',
@@ -32,13 +34,11 @@ function BattleArea() {
 
 
     React.useEffect(() => {
-        if( counter === 5 )
+        if( counter === 10 )
         {
             if( blueWins === null) {
                 getPokemon(true);
                 getPokemon(false);
-                console.log("BLUE: " + BluePokemon.back_default);
-                console.log("RED: " + RedPokemon.front_default);
                 setStartRendering(true);
             }
             else if( blueWins )
@@ -48,12 +48,14 @@ function BattleArea() {
 
             
         }
+        if( counter === 7)
+            setWinMessage("Fight!")
 
         const timer = counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
 
         if (counter === 0) {
             chooseWinner()
-            setCounter(5)
+            setCounter(10)
         }
     }, [counter]);
 
@@ -114,10 +116,16 @@ function BattleArea() {
 
 
     const chooseWinner = () => {
-        if (Math.random() < 0.5)
+        if (Math.random() < 0.5) {
             setBlueWins(true)
-        else
+            setWinMessage( BluePokemon.name + " Wins!")
+        }
+        else {
             setBlueWins(false)
+            setWinMessage( RedPokemon.name + " Wins!")
+        }
+
+
     }
 
 
@@ -141,22 +149,17 @@ function BattleArea() {
 
 
     return (
-        <div>
-            <p>
-                <p> { blueWins ? "Blue Wins!" : "Red Wins!" } </p>
+        <div className="MainField">
+                <p> { winMessage } </p>
                 <div align="left">
                     <div align="right">
-                        { startRendering ? <img src={RedPokemon.front_default} /> : "" }
+                        { startRendering ? <img src={RedPokemon.front_default} width="250" height="250" /> : "" }
                         <img src={TrainerRed} alt="Red Trainer Sprite" hspace="0"  vspace="0" width="400" height="400" />
                     </div>
-                    <img src={TrainerBlue} alt="Blue Trainer Sprite" hspace="30" vspace="14" align="top" width="250" height="230" />
-                    {startRendering ? <img src={BluePokemon.back_default} /> : ""}
+                    <img src={TrainerBlue} alt="Blue Trainer Sprite" hspace="30" vspace="0" align="top" width="250" height="230" />
+                    {startRendering ? <img src={BluePokemon.back_default} width="250" height="250" /> : ""}
                 </div>
-            </p>
-
             <p>Countdown: {counter}</p>
-            <p>RED: {/*RedPokemon.name*/}</p>
-            <p>BLUE: {/*BluePokemon.name*/}</p>
         </div>
     )
 }
