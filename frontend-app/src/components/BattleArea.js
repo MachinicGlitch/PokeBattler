@@ -1,11 +1,14 @@
 import React from 'react';
 import axios from 'axios';
+import LayeredImage from "react-layered-image";
 import './../css/BattleArea.css';
 import TrainerBlue from '../assets/BluePlayerTrainer.png';
 import TrainerRed from '../assets/RedPlayerTrainer.png';
 import Explosion from '../assets/explosion_noloop.gif';
 import PokeBallTossRed from '../assets/pokeball_toss_red.gif';
 import PokeBallTossBlue from '../assets/pokeball_toss_blue.gif';
+import PokePlatform from '../assets/background.png';
+import Transparent from '../assets/transparent.png';
 
 
 
@@ -32,7 +35,6 @@ function BattleArea() {
         SecondaryType: ''
        });
 
-
     React.useEffect(() => {
         if( counter === 10 )
         {
@@ -45,8 +47,6 @@ function BattleArea() {
                 getPokemon(false);
             else
                 getPokemon(true);
-
-            
         }
         if( counter === 7)
             setWinMessage("Fight!")
@@ -58,7 +58,6 @@ function BattleArea() {
             setCounter(10)
         }
     }, [counter]);
-
 
     const getPokemon = ( isBlue ) => {
         axios.get( "http://localhost:8080/pokemon/" + (Math.floor(Math.random() * 151) + 1) )
@@ -112,9 +111,6 @@ function BattleArea() {
             })
     }
 
-
-
-
     const chooseWinner = () => {
         if (Math.random() < 0.5) {
             setBlueWins(true)
@@ -124,10 +120,9 @@ function BattleArea() {
             setBlueWins(false)
             setWinMessage( RedPokemon.name + " Wins!")
         }
-
-
     }
 
+/* NOT BEING USED -- get it to work with layers
 
     const showDeathAnimation = () => {
         return(
@@ -146,24 +141,71 @@ function BattleArea() {
             <img src= {PokeBallTossBlue} alt="Animation that plays when a pokemon is summoned from blue "></img>
         )
     }
+*/
+    const style = {
+        position: "absolute",
+        top: 400, 
+        right: 700,
+        bottom: 0,
+        left: 0,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      };
+      const style2 = {
+        position: "absolute",
+        top: 0,
+        right: 0,
+        bottom: 100,
+        left: 600,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      };
 
+      var BluePokemonSpriteBack = (Number) (BluePokemon.id);
+      var RedPokemonSpriteFront = (Number) (RedPokemon.id);
 
+      function test()
+      {
+          return Explosion
+      }
+        
+const layers = [
+   PokePlatform, "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/"+BluePokemonSpriteBack+".png",test()
+];
+const layers2 = [
+    PokePlatform, "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+RedPokemonSpriteFront+".png"
+];
     return (
         <div className="MainField">
                 <p> { winMessage } </p>
                 <div align="left">
                     <div align="right">
-                        { startRendering ? <img src={RedPokemon.front_default} width="250" height="250" /> : "" }
+                        
                         <img src={TrainerRed} alt="Red Trainer Sprite" hspace="0"  vspace="0" width="400" height="400" />
+                        <div style={style2}>
+                            <LayeredImage layers={layers2} style={{ width: 450 }} />
+                        </div>
                     </div>
+                    {
                     <img src={TrainerBlue} alt="Blue Trainer Sprite" hspace="30" vspace="0" align="top" width="250" height="230" />
-                    {startRendering ? <img src={BluePokemon.back_default} width="250" height="250" /> : ""}
+                    
+                    }
+                    
+                    <div style={style}>
+                        <LayeredImage layers={layers} style={{ width: 450 }} />
+                    </div>
+
+                    {
+                    <img src= {Transparent} width="250" height="250" />
+                    }
+                    
                 </div>
             <p>Countdown: {counter}</p>
         </div>
     )
 }
 
-
-
 export default BattleArea;
+// your table isnt updating on your website.
