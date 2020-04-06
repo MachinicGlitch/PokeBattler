@@ -1,3 +1,18 @@
 .MainField{
     font-size: 150%;
 }
+.BluePokeWins{
+    width: 100px;
+
+    float: left;
+}
+.BluePokeWins img {
+    width: 70px;
+}
+.RedPokeWins{
+    width: 100px;
+    float: right;
+}
+.RedPokeWins img {
+    width: 70px;
+}
