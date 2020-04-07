@@ -1,39 +1,15 @@
 import React, { Component } from 'react';
-import Chart from "chart.js";
-
+import WinsByType from './WinsByType.js';
+import WinStreakByPokemon from './WinStreakByPokemon.js'
+import WinsByTrainer from './WinsByTrainer.js';
+import '../css/Stats.css'
 class Stats extends Component {
-    chartRef = React.createRef();
-    
-    componentDidMount() {
-        // const myChartRef = this.chartRef.current.getContext("2d");
-        
-        // new Chart(myChartRef, {
-        //     type: "line",
-        //     data: {
-        //         //Bring in data
-        //         labels: ["Jan", "Feb", "March"],
-        //         datasets: [
-        //             {
-        //                 label: "Sales",
-        //                 data: [86, 67, 91],
-        //             }
-        //         ]
-        //     },
-        //     options: {
-        //         //Customize chart options
-        //     }
-        // });
-    }
-
     render() {
         return (
             <div>
-                {/*
-                <canvas
-                    id="myChart"
-                    ref={this.chartRef}
-                />
-                */}
+                <div className="doughnut"><WinsByType /></div>
+                <div className="pie"><WinsByTrainer /></div>
+                <div className="bar"><WinStreakByPokemon /></div>
             </div>
         )
     }
