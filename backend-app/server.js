@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-const port = 8080;
+var port = process.env.PORT || 3306;
 
 var connection = require("./Connection");
 
@@ -25,5 +25,5 @@ app.listen(port, (err)=>{
   if (err) {
     return console.log('ERROR: ', err);
   }
-    console.log("The server is live on port; " + port);
+    console.log("The server is live on port: " + port);
 });

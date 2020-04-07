@@ -75,7 +75,7 @@ function BattleArea() {
     }, [counter]);
 
     const getPokemon = ( isBlue ) => {
-        axios.get( "http://localhost:8080/pokemon/" + (Math.floor(Math.random() * 151) + 1) )
+        axios.get( "http://localhost:3306/pokemon/" + (Math.floor(Math.random() * 151) + 1) )
             .then(res => {
                 const data = res.data;
                 console.log(data.name);
