@@ -12,8 +12,15 @@ module.exports = function(app){
   app.route('/pokemon/insert')
     .post(urlencodedParser, pokemon.insertPokemon)
 
-  app.route('/pokemon/update')
-    .post(urlencodedParser, pokemon.updatePokemon)
+  // app.route('/pokemon/updateWins')
+  //   .post(urlencodedParser, pokemon.updatePokemonWins)
+
+  // app.route('/pokemon/updateLosses')
+  //   .post(urlencodedParser, pokemon.updatePokemonLosses)
+
+  // app.route('/pokemon/updateTimesChosen')
+  //   .post(urlencodedParser, pokemon.updatePokemonTimesChosen)
+
 
 
   app.route('/types/:type')
@@ -22,6 +29,12 @@ module.exports = function(app){
   app.route('/types/insert')
     .post(urlencodedParser, types.insertType)
 
-  app.route('/types/update')
-    .post(urlencodedParser, pokemon.updateType)
+  // app.route('/types/updateWins')
+  //   .post(urlencodedParser, pokemon.updateTypeWins)
+
+  // app.route('/types/updateLosses')
+  //   .post(urlencodedParser, pokemon.updateTypeLosses)
+
+  // app.route('/types/updateTimesChosen')
+  //   .post(urlencodedParser, pokemon.updateTypeTimesChosen)
 }
