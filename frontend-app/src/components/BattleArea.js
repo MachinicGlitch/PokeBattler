@@ -130,6 +130,7 @@ function BattleArea() {
     const PokemonPopulator = () => {
         //var Array = new Array[]; 
         let json = "";
+
         // for(var i = 1; i <= 151; i++)
         // {
 
@@ -137,10 +138,10 @@ function BattleArea() {
             .then(res => {
                 const data = res.data;
                 
-                var wins = (Math.floor(Math.random() * 200) + 20);
-                var losses = (Math.random() * 220);
-                var times_chosen = (Math.floor(Math.random() * 150) + losses); 
-                var best_streak = (Math.random() * 20);
+                var wins = (Math.floor(Math.random() * 50) + 20);
+                var losses = (Math.random() * 70);
+                var times_chosen = (Math.floor(Math.random() * 100) + losses); 
+                var best_streak = (Math.random() * 15);
 
                 wins -= ( wins % 1 );
                 losses -= ( losses % 1 );
