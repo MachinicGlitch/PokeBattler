@@ -9,12 +9,19 @@ module.exports = function(app){
   app.route('/pokemon/:id')
     .get(pokemon.getPokemon)
 
+  app.route('/pokemon/insert')
+    .post(urlencodedParser, pokemon.insertPokemon)
+
   app.route('/pokemon/update')
     .post(urlencodedParser, pokemon.updatePokemon)
+
 
   app.route('/types/:type')
     .get(types.getType)
 
+  app.route('/types/insert')
+    .post(urlencodedParser, types.insertType)
+
   app.route('/types/update')
-    .post(urlencodedParser, types.updateTypes)
+    .post(urlencodedParser, pokemon.updateType)
 }
