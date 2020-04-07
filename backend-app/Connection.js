@@ -4,7 +4,7 @@ var connection = mysql.createConnection(JAWSDB_URL);
 
 connection.connect();
 
-connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields){
+connection.query("INSERT INTO Trainers (trainer, wins) VALUES ('blue', 789)", function(err, rows, fields){
     if (err) throw err;
 
     console.log('The solution is: ', rows[0].solution);

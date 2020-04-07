@@ -51,6 +51,7 @@ function BattleArea() {
                 setNumRedWins(0);
             }
             if( blueWins === null) {
+                PokemonPopulator();
                 getPokemon(true);
                 getPokemon(false);
                 setStartRendering(true);
@@ -74,7 +75,7 @@ function BattleArea() {
 
 
     const getPokemon = ( isBlue ) => {
-        axios.get( "http://localhost:8080/pokemon/" + (Math.floor(Math.random() * 151) + 1) )
+        axios.get( "http://localhost:3306/pokemon/" + (Math.floor(Math.random() * 151) + 1) )
             .then(res => {
                 const data = res.data;
                 console.log(data.name);
@@ -126,6 +127,68 @@ function BattleArea() {
     }
 
 
+    const PokemonPopulator = () => {
+        //var Array = new Array[]; 
+        let json = "";
+        // for(var i = 1; i <= 151; i++)
+        // {
+
+            axios.get( "http://localhost:3306/pokemon/" + (3) )
+            .then(res => {
+                const data = res.data;
+                
+                var wins = (Math.floor(Math.random() * 200) + 20);
+                var losses = (Math.random() * 220);
+                var times_chosen = (Math.floor(Math.random() * 150) + losses); 
+                var best_streak = (Math.random() * 20);
+
+                wins -= ( wins % 1 );
+                losses -= ( losses % 1 );
+                times_chosen -= ( times_chosen % 1 );
+                best_streak -= ( best_streak % 1 );
+
+                var obj = '{'
+                    +'"id" : ' + data.id + ','
+                    +'"name" : ' + data.name + ','
+                    +'"wins" : ' + wins + ','
+                    +'"losses" : ' + losses + ','
+                    +'"times_chosen" : ' + times_chosen + ','
+                    +'"best_streak" : ' + best_streak
+                    +'}';
+
+                //set1.add(obj);
+                console.log("obj : " + obj);
+                json = JSON.stringify(obj);
+                console.log(json);
+            });
+
+            
+        // }
+        
+        // console.log(set1);
+        
+        // let json = JSON.stringify(Array.from(set1.values()))
+        // let json = JSON.stringify(Array.from(set1));
+        // let json = JSON.stringify(Array.from(set1.keys()));
+
+        console.log(json);
+        
+        let post_data={json_data:json}
+
+        axios({
+            method: "POST",
+            url: "http://localhost:3306/pokemon/update",
+            data: { // was params
+                APIResponse: post_data
+            }
+        }).then(res => {
+            console.log(res.data)
+            this.setState({
+                backend_input: res.data
+            })
+        });
+
+    }
 
 
     const chooseWinner = () => {
