@@ -25,5 +25,5 @@ app.listen(port, (err)=>{
   if (err) {
     return console.log('ERROR: ', err);
   }
-    console.log("The server is live on port; " + port);
+    console.log("The server is live on port: " + port);
 });

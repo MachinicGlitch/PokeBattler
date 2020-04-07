@@ -4,10 +4,13 @@ var connection = mysql.createConnection(JAWSDB_URL);
 
 connection.connect();
 
-connection.query("UPDATE Trainers SET wins = 2342 WHERE trainer='blue'", function(err, rows, fields){
+connection.query("UPDATE Trainers SET wins = 2189 WHERE trainer='red'", function(err, rows, fields){
     if (err) throw err;
 
     console.log('success');
 });
 
+module.exports = connection;
+
 connection.end;
+
