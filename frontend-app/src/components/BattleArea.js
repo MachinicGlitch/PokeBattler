@@ -238,7 +238,7 @@ function BattleArea() {
             <img src= {PokeBallTossBlue} alt="Animation that plays when a pokemon is summoned from blue "></img>
         )
     }
-*/
+
     const style = {
         position: "absolute",
         top: 400, 
