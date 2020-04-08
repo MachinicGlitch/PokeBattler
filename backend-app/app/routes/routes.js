@@ -35,6 +35,9 @@ module.exports = function(app){
   app.route('/types/:type')
     .get(types.getType)
 
+  app.route('/typeWins')
+    .get(urlencodedParser, types.getTypeWins)
+
   app.route('/types/insert')
     .post(urlencodedParser, types.insertType)
 
@@ -50,5 +53,9 @@ module.exports = function(app){
 
   app.route('/trainers')
     .get(urlencodedParser, trainers.getTrainers)
+
+  app.route('/trainers/update')
+    .post(urlencodedParser, trainers.updateTrainerWins)
+
 
 }

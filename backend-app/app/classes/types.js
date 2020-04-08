@@ -12,6 +12,15 @@ exports.getType = function(req, res) {
     });
 }
 
+exports.getTypeWins = function(req, res) {
+  var sql = "SELECT * FROM Types";
+  connection.query(sql, function (err, response, fields)
+  {
+    res.send(response);
+  });
+}
+
+
 exports.insertType = function(req, res) {
   var sql = "INSERT INTO Types (type, wins, losses, times_chosen)"
     + " VALUES ( ?, ?, ?, ? )";
@@ -21,23 +30,23 @@ exports.insertType = function(req, res) {
 }
 
 exports.updateTypeWins = function(req, res) {
-  var sql = "UPDATE Types SET wins = wins + 1 WHERE id = ?";
+  var sql = "UPDATE Types SET wins = wins + 1 WHERE type = ?";
   console.log(req.body.type);
-  connection.query(sql, [req.body.id], function (err, res, fields) {
+  connection.query(sql, [req.body.type], function (err, res, fields) {
   });
 }
 
 exports.updateTypeLosses = function(req, res) {
-  var sql = "UPDATE Types SET losses = losses + 1 WHERE id = ?";
+  var sql = "UPDATE Types SET losses = losses + 1 WHERE type = ?";
   console.log(req.body.type);
-  connection.query(sql, [req.body.id], function (err, res, fields) {
+  connection.query(sql, [req.body.type], function (err, res, fields) {
   });
 }
 
 exports.updateTypeTimesChosen = function(req, res) {
-  var sql = "UPDATE Types SET times_chosen = times_chosen + 1 WHERE id = ?";
+  var sql = "UPDATE Types SET times_chosen = times_chosen + 1 WHERE type = ?";
   console.log(req.body.type);
-  connection.query(sql, [req.body.id], function (err, res, fields) {
+  connection.query(sql, [req.body.type], function (err, res, fields) {
   });
 }
 

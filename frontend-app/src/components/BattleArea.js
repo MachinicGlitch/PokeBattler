@@ -131,11 +131,19 @@ function BattleArea() {
             setBlueWins(true)
             setWinMessage("Blue's " + capitalize(BluePokemon.name) + " Wins!")
             setNumBlueWins(numBlueWins+1)
+            
+            let params = new URLSearchParams();
+            params.append('trainer', "blue");
+            axios.post( "http://localhost:3306/trainers/update", params );
         }
         else {
             setBlueWins(false)
             setWinMessage("Red's " + capitalize(RedPokemon.name) + " Wins!")
             setNumRedWins(numRedWins+1)
+            
+            let params = new URLSearchParams();
+            params.append('trainer', "red");
+            axios.post( "http://localhost:3306/trainers/update", params );
         }
     }
 
@@ -281,7 +289,7 @@ const layers2 = [
                 {showPokeballs(false)}
                 <div align="left">
                     <div align="right">
-                        { startRendering ? <img src={RedPokemon.front_default} alt="Red Trainer Sprite" width="250" height="250" /> : "" }
+                        
                         <img src={TrainerRed} alt="Red Trainer Sprite" hspace="0"  vspace="0" width="400" height="400" />
                         <div style={style2}>
                             <LayeredImage layers={layers2} style={{ width: 450 }} />
@@ -298,7 +306,7 @@ const layers2 = [
                     {
                     <img src= {Transparent} width="250" height="250" />
                     }
-                    {startRendering ? <img src={BluePokemon.back_default} alt="Blue Trainer Sprite" width="250" height="250" /> : ""}
+                    
                 </div>
             <p>Countdown: {counter}</p>
         </div>

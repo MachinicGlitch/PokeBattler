@@ -1,7 +1,7 @@
 let connection = require('./../../Connection.js');
 
   
-exports.getBattles = function(req, res) {
+  exports.getBattles = function(req, res) {
     var sql = "SELECT * FROM Battles";
     connection.query(sql, function (err, response, fields)
     {
