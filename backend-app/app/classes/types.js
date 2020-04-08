@@ -13,7 +13,7 @@ exports.getType = function(req, res) {
 }
 
 exports.getTypeWins = function(req, res) {
-  var sql = "SELECT * FROM Types";
+  var sql = "SELECT * FROM Types Order By wins DESC";
   connection.query(sql, function (err, response, fields)
   {
     res.send(response);
