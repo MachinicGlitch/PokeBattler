@@ -40,3 +40,4 @@ exports.updateTypeTimesChosen = function(req, res) {
   connection.query(sql, [req.body.id], function (err, res, fields) {
   });
 }
+

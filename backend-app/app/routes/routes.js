@@ -1,5 +1,7 @@
 const pokemon = require('./../classes/pokemon');
 const types = require('./../classes/types');
+const trainers = require('./../classes/trainers');
+const battles = require('./../classes/battles');
 
 var bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -9,18 +11,25 @@ module.exports = function(app){
   app.route('/pokemon/:id')
     .get(pokemon.getPokemon)
 
-  app.route('/pokemon/insert')
-    .post(urlencodedParser, pokemon.insertPokemon)
 
-  app.route('/pokemon/updateWins')
-    .post(urlencodedParser, pokemon.updatePokemonWins)
+  app.route('/battles')
+    .get(urlencodedParser, battles.getBattles)
 
-  app.route('/pokemon/updateLosses')
-    .post(urlencodedParser, pokemon.updatePokemonLosses)
+  app.route('/battles/top10BestStreaks')
+    .get(urlencodedParser, battles.getTop10BestStreaks)
 
-  app.route('/pokemon/updateTimesChosen')
-    .post(urlencodedParser, pokemon.updatePokemonTimesChosen)
 
+  app.route('/battles/insert')
+    .post(urlencodedParser, battles.insertPokemon)
+
+  app.route('/battles/updateWins')
+    .post(urlencodedParser, battles.updatePokemonWins)
+
+  app.route('/battles/updateLosses')
+    .post(urlencodedParser, battles.updatePokemonLosses)
+
+  app.route('/battles/updateTimesChosen')
+    .post(urlencodedParser, battles.updatePokemonTimesChosen)
 
 
   app.route('/types/:type')
@@ -37,5 +46,9 @@ module.exports = function(app){
 
   app.route('/types/updateTimesChosen')
     .post(urlencodedParser, types.updateTypeTimesChosen)
+
+
+  app.route('/trainers')
+    .get(urlencodedParser, trainers.getTrainers)
 
 }
