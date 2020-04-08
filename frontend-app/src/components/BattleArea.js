@@ -16,8 +16,6 @@ import blankBall from '../assets/losePoke.png';
 
 
 function BattleArea() {
-
-    let [startRendering, setStartRendering] = React.useState(false);
     let [winMessage, setWinMessage] = React.useState('Get Ready Trainers!');
     let [counter, setCounter] = React.useState(10);
     let [numBlueWins, setNumBlueWins] = React.useState(0);
@@ -41,37 +39,43 @@ function BattleArea() {
        });
 
     React.useEffect(() => {
+        
         if( counter === 10 )
         {
-            if( numBlueWins === 3 ) {
+            if( blueWins === null) {
+                getPokemon(true);// get blue pokemon
+                getPokemon(false);// get red pokemon
+            }
+            else if( numBlueWins === 3 ) {// blue pokeball counter
                 setWinMessage("Blue Wins!")
                 setNumBlueWins(0);
                 setNumRedWins(0);
+                getPokemon(true);
+                getPokemon(false);
             }
-            else if( numRedWins === 3 ) {
+            else if( numRedWins === 3 ) {// red pokeball counter
                 setWinMessage("Red Wins!")
                 setNumBlueWins(0);
                 setNumRedWins(0);
-            }
-            if( blueWins === null) {
                 getPokemon(true);
                 getPokemon(false);
-                setStartRendering(true);
-            }
+            } 
             else if( blueWins )
                 getPokemon(false);
-            else
+            else if( !blueWins )
                 getPokemon(true);
         }
+
         if( counter === 7) {
             setWinMessage("Fight!")
         }
-        const timer = counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
 
         if (counter === 0) {
             chooseWinner()
             setCounter(10)
         }
+
+        const timer = counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
     }, [counter]);
 
     const getPokemon = ( isBlue ) => {
@@ -79,6 +83,28 @@ function BattleArea() {
             .then(res => {
                 const data = res.data;
                 console.log(data.name);
+
+
+                //This is for times chosen: the chart we are using is not being used right now
+                // let paramsBattle = new URLSearchParams();
+                // paramsBattle.append('id', data.id);
+                // axios.post( "http://localhost:3306/battles/updateTimesChosen", paramsBattle );
+                // if( data.types.length === 1)
+                // {
+                //     let paramsType = new URLSearchParams();
+                //     paramsType.append('type', data.data.types[0].type.name);
+                //     axios.post( "http://localhost:3306/types/updateTimesChosen", paramsType );
+                // }
+                // else 
+                // {
+                //     let paramsType1 = new URLSearchParams();
+                //     paramsType1.append('type', data.data.types[0].type.name);
+                //     axios.post( "http://localhost:3306/types/updateTimesChosen", paramsType1 );
+
+                //     let paramsType2 = new URLSearchParams();
+                //     paramsType2.append('type', data.data.types[1].type.name);
+                //     axios.post( "http://localhost:3306/types/updateTimesChosen", paramsType2 );
+                // }
 
                 if( isBlue ) {
                     if( data.types.length === 1)
@@ -88,7 +114,7 @@ function BattleArea() {
                             front_default: data.sprites['front_default'],
                             back_default: data.sprites['back_default'],
                             PrimaryType: data.types[0].type.name,
-                            SecondaryType: 'null'
+                            SecondaryType: null
                         });
                     else 
                         setBluePokemon({
@@ -108,7 +134,7 @@ function BattleArea() {
                             front_default: data.sprites['front_default'],
                             back_default: data.sprites['back_default'],
                             PrimaryType: data.types[0].type.name,
-                            SecondaryType: 'null'
+                            SecondaryType: null
                         });
                     else 
                         setRedPokemon({
@@ -127,23 +153,86 @@ function BattleArea() {
     }
 
     const chooseWinner = () => {
-        if (Math.random() < 0.5) {
+        // IF blue wins
+        if (Math.random() < 0.5) { 
             setBlueWins(true)
             setWinMessage("Blue's " + capitalize(BluePokemon.name) + " Wins!")
             setNumBlueWins(numBlueWins+1)
             
-            let params = new URLSearchParams();
-            params.append('trainer', "blue");
-            axios.post( "http://localhost:3306/trainers/update", params );
-        }
-        else {
+            // let paramsTrainer = new URLSearchParams(); // Update trainers wins
+            // paramsTrainer.append('trainer', "blue");
+            // axios.post( "http://localhost:3306/trainers/update", paramsTrainer );
+
+            // let paramsBattleWin = new URLSearchParams(); // update blue pokemon id wins
+            // paramsBattleWin.append('id', BluePokemon.id);
+            // axios.post( "http://localhost:3306/battle/updateWins", paramsBattleWin );
+
+            // let paramsBattleLoss = new URLSearchParams(); // update red pokemon id loss
+            // paramsBattleLoss.append('id', RedPokemon.id);
+            // axios.post( "http://localhost:3306/battle/updateLosses", paramsBattleLoss );
+
+            // let paramsBlueType1 = new URLSearchParams(); // Update primary type wins
+            // paramsBlueType1.append('type', BluePokemon.PrimaryType);
+            // axios.post( "http://localhost:3306/types/updateWins", paramsBlueType1 );
+
+            // if( BluePokemon.SecondaryType != null )
+            // {
+            //     let paramsType2 = new URLSearchParams(); // Update secondary type name
+            //     paramsType2.append('type', BluePokemon.SecondaryType);
+            //     axios.post( "http://localhost:3306/types/updateWins", paramsType2 );
+            // }
+
+            // let paramsRedType1 = new URLSearchParams(); // Update primary type wins
+            // paramsRedType1.append('type', RedPokemon.PrimaryType);
+            // axios.post( "http://localhost:3306/types/updateLosses", paramsRedType1 );
+
+            // if( RedPokemon.SecondaryType != null ) 
+            // {
+            //     let paramsType2 = new URLSearchParams(); // Update secondary type wins
+            //     paramsType2.append('type', RedPokemon.SecondaryType);
+            //     axios.post( "http://localhost:3306/types/updateLosses", paramsType2 );
+            // }
+
+        }//END IF blue wins
+        
+        else { // red wins
             setBlueWins(false)
             setWinMessage("Red's " + capitalize(RedPokemon.name) + " Wins!")
             setNumRedWins(numRedWins+1)
-            
-            let params = new URLSearchParams();
-            params.append('trainer', "red");
-            axios.post( "http://localhost:3306/trainers/update", params );
+
+            let paramsTrainer = new URLSearchParams(); // Update trainers wins
+            paramsTrainer.append('trainer', "red");
+            axios.post( "http://localhost:3306/trainers/update", paramsTrainer );
+
+            // let paramsBattleWin = new URLSearchParams(); // update red pokemon id wins
+            // paramsBattleWin.append('id', RedPokemon.id);
+            // axios.post( "http://localhost:3306/battle/updateWins", paramsBattleWin );
+
+            // let paramsBattleLoss = new URLSearchParams(); // update blue pokemon id loss
+            // paramsBattleLoss.append('id', BluePokemon.id);
+            // axios.post( "http://localhost:3306/battle/updateLosses", paramsBattleLoss );
+
+            let paramsRedType1 = new URLSearchParams(); // Update primary type
+            paramsRedType1.append('type', RedPokemon.PrimaryType);
+            axios.post( "http://localhost:3306/types/updateWins", paramsRedType1 );
+
+            // if( RedPokemon.SecondaryType != null )
+            // {
+            //     let paramsType2 = new URLSearchParams(); // Update secondary type
+            //     paramsType2.append('type', RedPokemon.SecondaryType);
+            //     axios.post( "http://localhost:3306/types/updateWins", paramsType2 );
+            // }
+
+            // let paramsBlueType1 = new URLSearchParams(); //update primary type win
+            // paramsBlueType1.append('type', BluePokemon.PrimaryType);
+            // axios.post( "http://localhost:3306/types/updateLosses", paramsBlueType1 );
+
+            // if( BluePokemon.SecondaryType != null )
+            // {
+            //     let paramsType2 = new URLSearchParams(); // Update secondary type wins
+            //     paramsType2.append('type', BluePokemon.SecondaryType);
+            //     axios.post( "http://localhost:3306/types/updateLosses", paramsType2 );
+            // }
         }
     }
 
@@ -229,23 +318,6 @@ function BattleArea() {
     const capitalize = ( s ) => {
         return s.charAt(0).toUpperCase() + s.slice(1)
     }
-    const showDeathAnimation = () => {
-        return(
-            <img src={Explosion} alt="Explosion that happens when a pokemon faints for "  ></img>
-        )
-    }
-
-    const showSummonAnimationRed = () => {
-        return(
-            <img src= {PokeBallTossRed} alt="Animation that plays when a pokemon is summoned from red "></img>
-        )
-    }
-
-    const showSummonAnimationBlue = () => {
-        return(
-            <img src= {PokeBallTossBlue} alt="Animation that plays when a pokemon is summoned from blue "></img>
-        )
-    }
 
     const style = {
         position: "absolute",
@@ -271,10 +343,7 @@ function BattleArea() {
       var BluePokemonSpriteBack = (Number) (BluePokemon.id);
       var RedPokemonSpriteFront = (Number) (RedPokemon.id);
 
-      function test()
-      {
-          return Explosion
-      }
+
         
 const layers = [
    PokePlatform, "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/"+BluePokemonSpriteBack+".png",PokeBallTossBlue

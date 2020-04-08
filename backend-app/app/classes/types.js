@@ -18,6 +18,7 @@ exports.getTypeWins = function(req, res) {
   {
     res.send(response);
   });
+  connection.end;
 }
 
 
@@ -27,13 +28,15 @@ exports.insertType = function(req, res) {
   console.log(req.body.type);
   connection.query(sql, [req.body.type, req.body.wins, req.body.losses, req.body.times_chosen ], function (err, res, fields) {
   });
+  connection.end;
 }
 
 exports.updateTypeWins = function(req, res) {
   var sql = "UPDATE Types SET wins = wins + 1 WHERE type = ?";
-  console.log(req.body.type);
+  console.log("Updating " + req.body.type + " wins");
   connection.query(sql, [req.body.type], function (err, res, fields) {
   });
+  connection.end;
 }
 
 exports.updateTypeLosses = function(req, res) {
@@ -41,6 +44,7 @@ exports.updateTypeLosses = function(req, res) {
   console.log(req.body.type);
   connection.query(sql, [req.body.type], function (err, res, fields) {
   });
+  connection.end;
 }
 
 exports.updateTypeTimesChosen = function(req, res) {
@@ -48,5 +52,6 @@ exports.updateTypeTimesChosen = function(req, res) {
   console.log(req.body.type);
   connection.query(sql, [req.body.type], function (err, res, fields) {
   });
+  connection.end;
 }
 

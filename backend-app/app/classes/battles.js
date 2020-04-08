@@ -7,6 +7,7 @@ let connection = require('./../../Connection.js');
     {
       res.send(response);
     });
+    connection.end;
   }
 
   exports.getTop10BestStreaks = function(req, res) {
@@ -15,6 +16,7 @@ let connection = require('./../../Connection.js');
     {
       res.send(response);
     });
+    connection.end;
   }
 
 
@@ -25,6 +27,7 @@ let connection = require('./../../Connection.js');
     console.log(req.body.id);
     connection.query(sql, [req.body.id, req.body.name, req.body.wins, req.body.losses, req.body.times_chosen, req.body.best_streak], function (err, res, fields) {
     });
+    connection.end;
   }
   
   exports.updatePokemonWins = function(req, res) {
@@ -32,6 +35,7 @@ let connection = require('./../../Connection.js');
     console.log(req.body.type);
     connection.query(sql, [req.body.id], function (err, res, fields) {
     });
+    connection.end;
   }
   
   exports.updatePokemonLosses = function(req, res) {
@@ -39,6 +43,7 @@ let connection = require('./../../Connection.js');
     console.log(req.body.type);
     connection.query(sql, [req.body.id], function (err, res, fields) {
     });
+    connection.end;
   }
   
   exports.updatePokemonTimesChosen = function(req, res) {
@@ -46,4 +51,5 @@ let connection = require('./../../Connection.js');
     console.log(req.body.type);
     connection.query(sql, [req.body.id], function (err, res, fields) {
     });
+    connection.end;
   }
