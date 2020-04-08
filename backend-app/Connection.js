@@ -4,7 +4,7 @@ var connection = mysql.createConnection(JAWSDB_URL);
 
 connection.connect();
 
-connection.query("UPDATE Trainers SET wins = 2189 WHERE trainer='red'", function(err, rows, fields){
+connection.query("SELECT * FROM Trainers", function(err, rows, fields){
     if (err) throw err;
 
     console.log('success');
