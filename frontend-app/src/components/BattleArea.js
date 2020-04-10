@@ -38,6 +38,37 @@ function BattleArea() {
         SecondaryType: ''
        });
 
+    const BlueStyle = {
+        position: "absolute",
+        top: 400, 
+        right: 700,
+        bottom: 0,
+        left: 0,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        };
+    const RedStyle = {
+        position: "absolute",
+        top: 0,
+        right: 0,
+        bottom: 100,
+        left: 600,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+    };
+
+    var BluePokemonSpriteBack = (Number) (BluePokemon.id);
+    var RedPokemonSpriteFront = (Number) (RedPokemon.id);
+
+    const BlueLayers = [
+        PokePlatform, "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/" + BluePokemonSpriteBack + ".png", PokeBallTossBlue
+    ];
+    const RedLayers = [
+        PokePlatform, "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + RedPokemonSpriteFront + ".png", PokeBallTossRed
+    ];
+
     React.useEffect(() => {
         
         if( counter === 10 )
@@ -84,30 +115,27 @@ function BattleArea() {
                 const data = res.data;
                 console.log(data.name);
 
+                // Update the pokemon's times chosen stat
+                let paramsBattle = new URLSearchParams();
+                paramsBattle.append('id', data.id);
+                axios.post( "http://localhost:3306/battles/updateTimesChosen", paramsBattle );
 
-                //This is for times chosen: the chart we are using is not being used right now
-                // let paramsBattle = new URLSearchParams();
-                // paramsBattle.append('id', data.id);
-                // axios.post( "http://localhost:3306/battles/updateTimesChosen", paramsBattle );
-                // if( data.types.length === 1)
-                // {
-                //     let paramsType = new URLSearchParams();
-                //     paramsType.append('type', data.data.types[0].type.name);
-                //     axios.post( "http://localhost:3306/types/updateTimesChosen", paramsType );
-                // }
-                // else 
-                // {
-                //     let paramsType1 = new URLSearchParams();
-                //     paramsType1.append('type', data.data.types[0].type.name);
-                //     axios.post( "http://localhost:3306/types/updateTimesChosen", paramsType1 );
+                // Update the pokemon's primary type times chosen stat
+                let paramsType1 = new URLSearchParams();
+                paramsType1.append('type', data.types[0].type.name);
+                axios.post( "http://localhost:3306/types/updateTimesChosen", paramsType1 );
 
-                //     let paramsType2 = new URLSearchParams();
-                //     paramsType2.append('type', data.data.types[1].type.name);
-                //     axios.post( "http://localhost:3306/types/updateTimesChosen", paramsType2 );
-                // }
+                // Update the pokemon's secondary type times chosen stat if present
+                if( data.types.length === 2)
+                {
+                    let paramsType2 = new URLSearchParams();
+                    paramsType2.append('type', data.types[1].type.name);
+                    axios.post( "http://localhost:3306/types/updateTimesChosen", paramsType2 );
+                }
 
-                if( isBlue ) {
-                    if( data.types.length === 1)
+                
+                if( isBlue ) {  // set blue pokemon if it is mono type
+                    if( data.types.length === 1) 
                         setBluePokemon({
                             id: data.id,
                             name: data.name,
@@ -116,7 +144,7 @@ function BattleArea() {
                             PrimaryType: data.types[0].type.name,
                             SecondaryType: null
                         });
-                    else 
+                    else        // set blue pokemon if it is dual type
                         setBluePokemon({
                             id: data.id,
                             name: data.name,
@@ -126,7 +154,7 @@ function BattleArea() {
                             SecondaryType: data.types[1].type.name
                         });
                 }
-                else {
+                else {          // set red pokemon if it is mono type
                     if( data.types.length === 1)
                         setRedPokemon({
                             id: data.id,
@@ -136,7 +164,7 @@ function BattleArea() {
                             PrimaryType: data.types[0].type.name,
                             SecondaryType: null
                         });
-                    else 
+                    else        // set red pokemon if it is dual type
                         setRedPokemon({
                             id: data.id,
                             name: data.name,
@@ -152,125 +180,156 @@ function BattleArea() {
             })
     }
 
+
     const chooseWinner = () => {
-        // IF blue wins
-        if (Math.random() < 0.5) { 
+        if (Math.random() < 0.5) {  // If blue wins
             setBlueWins(true)
             setWinMessage("Blue's " + capitalize(BluePokemon.name) + " Wins!")
             setNumBlueWins(numBlueWins+1)
             
-            // let paramsTrainer = new URLSearchParams(); // Update trainers wins
-            // paramsTrainer.append('trainer', "blue");
-            // axios.post( "http://localhost:3306/trainers/update", paramsTrainer );
+            let paramsTrainer = new URLSearchParams();      // Update blue trainer's wins
+            paramsTrainer.append('trainer', "blue");
+            axios.post( "http://localhost:3306/trainers/update", paramsTrainer );
 
-            // let paramsBattleWin = new URLSearchParams(); // update blue pokemon id wins
-            // paramsBattleWin.append('id', BluePokemon.id);
-            // axios.post( "http://localhost:3306/battle/updateWins", paramsBattleWin );
+            let paramsBattleWin = new URLSearchParams();    // Update blue pokemon's wins
+            paramsBattleWin.append('id', BluePokemon.id);
+            axios.post( "http://localhost:3306/battle/updateWins", paramsBattleWin );
 
-            // let paramsBattleLoss = new URLSearchParams(); // update red pokemon id loss
-            // paramsBattleLoss.append('id', RedPokemon.id);
-            // axios.post( "http://localhost:3306/battle/updateLosses", paramsBattleLoss );
+            let paramsBattleLoss = new URLSearchParams();   // Update red pokemon's losses
+            paramsBattleLoss.append('id', RedPokemon.id);
+            axios.post( "http://localhost:3306/battle/updateLosses", paramsBattleLoss );
 
-            // let paramsBlueType1 = new URLSearchParams(); // Update primary type wins
-            // paramsBlueType1.append('type', BluePokemon.PrimaryType);
-            // axios.post( "http://localhost:3306/types/updateWins", paramsBlueType1 );
+            let paramsBlueType1 = new URLSearchParams();    // Update blue's primary type wins
+            paramsBlueType1.append('type', BluePokemon.PrimaryType);
+            axios.post( "http://localhost:3306/types/updateWins", paramsBlueType1 );
 
-            // if( BluePokemon.SecondaryType != null )
-            // {
-            //     let paramsType2 = new URLSearchParams(); // Update secondary type name
-            //     paramsType2.append('type', BluePokemon.SecondaryType);
-            //     axios.post( "http://localhost:3306/types/updateWins", paramsType2 );
-            // }
+            if( BluePokemon.SecondaryType != null )
+            {
+                let paramsType2 = new URLSearchParams();    // Update blue's secondary type wins
+                paramsType2.append('type', BluePokemon.SecondaryType);
+                axios.post( "http://localhost:3306/types/updateWins", paramsType2 );
+            }
 
-            // let paramsRedType1 = new URLSearchParams(); // Update primary type wins
-            // paramsRedType1.append('type', RedPokemon.PrimaryType);
-            // axios.post( "http://localhost:3306/types/updateLosses", paramsRedType1 );
+            let paramsRedType1 = new URLSearchParams();     // Update red's primary type losses
+            paramsRedType1.append('type', RedPokemon.PrimaryType);
+            axios.post( "http://localhost:3306/types/updateLosses", paramsRedType1 );
 
-            // if( RedPokemon.SecondaryType != null ) 
-            // {
-            //     let paramsType2 = new URLSearchParams(); // Update secondary type wins
-            //     paramsType2.append('type', RedPokemon.SecondaryType);
-            //     axios.post( "http://localhost:3306/types/updateLosses", paramsType2 );
-            // }
+            if( RedPokemon.SecondaryType != null ) 
+            {
+                let paramsType2 = new URLSearchParams();    // Update red's secondary type losses
+                paramsType2.append('type', RedPokemon.SecondaryType);
+                axios.post( "http://localhost:3306/types/updateLosses", paramsType2 );
+            }
 
-        }//END IF blue wins
-        
-        else { // red wins
+        }
+        else {  // If red wins
             setBlueWins(false)
             setWinMessage("Red's " + capitalize(RedPokemon.name) + " Wins!")
             setNumRedWins(numRedWins+1)
 
-            let paramsTrainer = new URLSearchParams(); // Update trainers wins
+            let paramsTrainer = new URLSearchParams();      // Update red trainer's wins
             paramsTrainer.append('trainer', "red");
             axios.post( "http://localhost:3306/trainers/update", paramsTrainer );
 
-            // let paramsBattleWin = new URLSearchParams(); // update red pokemon id wins
-            // paramsBattleWin.append('id', RedPokemon.id);
-            // axios.post( "http://localhost:3306/battle/updateWins", paramsBattleWin );
+            let paramsBattleWin = new URLSearchParams();    // Update red pokemon's wins
+            paramsBattleWin.append('id', RedPokemon.id);
+            axios.post( "http://localhost:3306/battle/updateWins", paramsBattleWin );
 
-            // let paramsBattleLoss = new URLSearchParams(); // update blue pokemon id loss
-            // paramsBattleLoss.append('id', BluePokemon.id);
-            // axios.post( "http://localhost:3306/battle/updateLosses", paramsBattleLoss );
+            let paramsBattleLoss = new URLSearchParams();   // Update blue pokemon's losses
+            paramsBattleLoss.append('id', BluePokemon.id);
+            axios.post( "http://localhost:3306/battle/updateLosses", paramsBattleLoss );
 
-            let paramsRedType1 = new URLSearchParams(); // Update primary type
+            let paramsRedType1 = new URLSearchParams();     // Update red's primary type wins
             paramsRedType1.append('type', RedPokemon.PrimaryType);
             axios.post( "http://localhost:3306/types/updateWins", paramsRedType1 );
 
-            // if( RedPokemon.SecondaryType != null )
-            // {
-            //     let paramsType2 = new URLSearchParams(); // Update secondary type
-            //     paramsType2.append('type', RedPokemon.SecondaryType);
-            //     axios.post( "http://localhost:3306/types/updateWins", paramsType2 );
-            // }
+            if( RedPokemon.SecondaryType != null )
+            {
+                let paramsType2 = new URLSearchParams();    // Update red's secondary type wins
+                paramsType2.append('type', RedPokemon.SecondaryType);
+                axios.post( "http://localhost:3306/types/updateWins", paramsType2 );
+            }
 
-            // let paramsBlueType1 = new URLSearchParams(); //update primary type win
-            // paramsBlueType1.append('type', BluePokemon.PrimaryType);
-            // axios.post( "http://localhost:3306/types/updateLosses", paramsBlueType1 );
+            let paramsBlueType1 = new URLSearchParams();    // Update blue's primary type losses
+            paramsBlueType1.append('type', BluePokemon.PrimaryType);
+            axios.post( "http://localhost:3306/types/updateLosses", paramsBlueType1 );
 
-            // if( BluePokemon.SecondaryType != null )
-            // {
-            //     let paramsType2 = new URLSearchParams(); // Update secondary type wins
-            //     paramsType2.append('type', BluePokemon.SecondaryType);
-            //     axios.post( "http://localhost:3306/types/updateLosses", paramsType2 );
-            // }
+            if( BluePokemon.SecondaryType != null )
+            {
+                let paramsType2 = new URLSearchParams();    // Update blue's secondary type losses
+                paramsType2.append('type', BluePokemon.SecondaryType);
+                axios.post( "http://localhost:3306/types/updateLosses", paramsType2 );
+            }
         }
     }
+
+    const pokeballRow = ( numWon ) => {
+        if ( numWon === 0 ) {
+            return (
+                <div>
+                    <img src={blankBall} alt="Blank match counter Pokeball"></img>
+                    <img src={blankBall} alt="Blank match counter Pokeball"></img>
+                    <img src={blankBall} alt="Blank match counter Pokeball"></img>
+                </div>
+            )
+        }
+        else if ( numWon === 1 ) {
+            return (
+                <div>
+                    <img src={winBall} alt="Win match counter Pokeball"></img>
+                    <img src={blankBall} alt="Blank match counter Pokeball"></img>
+                    <img src={blankBall} alt="Blank match counter Pokeball"></img>
+                </div>
+            )
+        }
+        else if ( numWon === 2 ) {
+            return (
+                <div>
+                    <img src={winBall} alt="Win match counter Pokeball"></img>
+                    <img src={winBall} alt="Win match counter Pokeball"></img>
+                    <img src={blankBall} alt="Blank match counter Pokeball"></img>
+                </div>
+            )
+        }
+        else if ( numWon === 3 ) {
+            return (
+                <div>
+                    <img src={winBall} alt="Win match counter Pokeball"></img>
+                    <img src={winBall} alt="Win match counter Pokeball"></img>
+                    <img src={winBall} alt="Win match counter Pokeball"></img>
+                </div>
+            )
+        }
+    }
+
 
     const showPokeballs = ( isBlue ) => {
         if( isBlue ) {
             if(numBlueWins === 0) {
                 return (
                     <div className="BluePokeWins">
-                        <img src={blankBall} alt="Blank match counter Pokeball"></img>
-                        <img src={blankBall} alt="Blank match counter Pokeball"></img>
-                        <img src={blankBall} alt="Blank match counter Pokeball"></img>
+                        { pokeballRow(0) }
                     </div>
                 )
             }
             else if(numBlueWins === 1) {
                 return (
                     <div className="BluePokeWins">
-                        <img src={winBall} alt="Win match counter Pokeball"></img>
-                        <img src={blankBall} alt="Blank match counter Pokeball"></img>
-                        <img src={blankBall} alt="Blank match counter Pokeball"></img>
+                        { pokeballRow(1) }
                     </div>
                 )
             }
             else if(numBlueWins === 2) {
                 return (
                     <div className="BluePokeWins">
-                        <img src={winBall} alt="Win match counter Pokeball"></img>
-                        <img src={winBall} alt="Win match counter Pokeball"></img>
-                        <img src={blankBall} alt="Blank match counter Pokeball"></img>
+                        { pokeballRow(2) }
                     </div>
                 )
             }
             else {
                 return (
                     <div className="BluePokeWins">
-                        <img src={winBall} alt="Win match counter Pokeball"></img>
-                        <img src={winBall} alt="Win match counter Pokeball"></img>
-                        <img src={winBall} alt="Win match counter Pokeball"></img>
+                        { pokeballRow(3) }
                     </div>
                 )
             }
@@ -279,36 +338,28 @@ function BattleArea() {
             if(numRedWins === 0) {
                 return (
                     <div className="RedPokeWins">
-                        <img src={blankBall} alt="Blank match counter Pokeball"></img>
-                        <img src={blankBall} alt="Blank match counter Pokeball"></img>
-                        <img src={blankBall} alt="Blank match counter Pokeball"></img>
+                        { pokeballRow(0) }
                     </div>
                 )
             }
             else if(numRedWins === 1) {
                 return (
                     <div className="RedPokeWins">
-                        <img src={winBall} alt="Win match counter Pokeball"></img>
-                        <img src={blankBall} alt="Blank match counter Pokeball"></img>
-                        <img src={blankBall} alt="Blank match counter Pokeball"></img>
+                        { pokeballRow(1) }
                     </div>
                 )
             }
             else if(numRedWins === 2) {
                 return (
                     <div className="RedPokeWins">
-                        <img src={winBall} alt="Win match counter Pokeball"></img>
-                        <img src={winBall} alt="Win match counter Pokeball"></img>
-                        <img src={blankBall} alt="Blank match counter Pokeball"></img>
+                        { pokeballRow(2) }
                     </div>
                 )
             }
             else {
                 return (
                     <div className="RedPokeWins">
-                        <img src={winBall} alt="Win match counter Pokeball"></img>
-                        <img src={winBall} alt="Win match counter Pokeball"></img>
-                        <img src={winBall} alt="Win match counter Pokeball"></img>
+                        { pokeballRow(3) }
                     </div>
                 )
             }
@@ -319,38 +370,7 @@ function BattleArea() {
         return s.charAt(0).toUpperCase() + s.slice(1)
     }
 
-    const style = {
-        position: "absolute",
-        top: 400, 
-        right: 700,
-        bottom: 0,
-        left: 0,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      };
-      const style2 = {
-        position: "absolute",
-        top: 0,
-        right: 0,
-        bottom: 100,
-        left: 600,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      };
-
-      var BluePokemonSpriteBack = (Number) (BluePokemon.id);
-      var RedPokemonSpriteFront = (Number) (RedPokemon.id);
-
-
-        
-const layers = [
-   PokePlatform, "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/"+BluePokemonSpriteBack+".png",PokeBallTossBlue
-];
-const layers2 = [
-    PokePlatform, "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+RedPokemonSpriteFront+".png",PokeBallTossRed
-];
+    
     return (
         <div className="MainField">
                 <p> { winMessage } </p>
@@ -360,16 +380,16 @@ const layers2 = [
                     <div align="right">
                         
                         <img src={TrainerRed} alt="Red Trainer Sprite" hspace="0"  vspace="0" width="400" height="400" />
-                        <div style={style2}>
-                            <LayeredImage layers={layers2} style={{ width: 450 }} />
+                        <div style={RedStyle}>
+                            <LayeredImage layers={RedLayers} style={{ width: 450 }} />
                         </div>
                     </div>
                     {
                     <img src={TrainerBlue} alt="Blue Trainer Sprite" hspace="30" vspace="0" align="top" width="250" height="230" />
                     }
                     
-                    <div style={style}>
-                        <LayeredImage layers={layers} style={{ width: 450 }} />
+                    <div style={BlueStyle}>
+                        <LayeredImage layers={BlueLayers} style={{ width: 450 }} />
                     </div>
 
                     {
@@ -383,4 +403,3 @@ const layers2 = [
 }
 
 export default BattleArea;
-// your table isnt updating on your website.
