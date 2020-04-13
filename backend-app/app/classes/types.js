@@ -33,7 +33,7 @@ exports.insertType = function(req, res) {
 
 exports.updateTypeWins = function(req, res) {
   var sql = "UPDATE Types SET wins = wins + 1 WHERE type = ?";
-  console.log("Incrementing " + req.body.type + "s wins");
+  console.log("Incrementing " + req.body.side + " " + req.body.type + "'s wins");
   connection.query(sql, [req.body.type], function (err, res, fields) {
   });
   connection.end;
@@ -41,7 +41,7 @@ exports.updateTypeWins = function(req, res) {
 
 exports.updateTypeLosses = function(req, res) {
   var sql = "UPDATE Types SET losses = losses + 1 WHERE type = ?";
-  console.log("Incrementing " + req.body.type + "s losses");
+  console.log("Incrementing " + req.body.side + " " + req.body.type + "'s losses");
   connection.query(sql, [req.body.type], function (err, res, fields) {
   });
   connection.end;
@@ -49,7 +49,7 @@ exports.updateTypeLosses = function(req, res) {
 
 exports.updateTypeTimesChosen = function(req, res) {
   var sql = "UPDATE Types SET times_chosen = times_chosen + 1 WHERE type = ?";
-  console.log("Incrementing " + req.body.type + "s times chosen");
+  console.log("Incrementing " + req.body.type + " (" +req.body.name + ") times chosen");
   connection.query(sql, [req.body.type], function (err, res, fields) {
   });
   connection.end;

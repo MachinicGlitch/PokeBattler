@@ -31,7 +31,7 @@ let connection = require('./../../Connection.js');
   
   exports.updatePokemonWins = function(req, res) {
     var sql = "UPDATE Battles SET wins = wins + 1 WHERE id = ?";
-    console.log("Incrementing " + req.body.type + "s wins");
+    console.log("Incrementing " + req.body.side + " " + req.body.name + "'s wins");
     connection.query(sql, [req.body.id], function (err, res, fields) {
     });
     connection.end;
@@ -39,7 +39,7 @@ let connection = require('./../../Connection.js');
   
   exports.updatePokemonLosses = function(req, res) {
     var sql = "UPDATE Battles SET losses = losses + 1 WHERE id = ?";
-    console.log("Incrementing " + req.body.type + "s losses");
+    console.log("Incrementing " + req.body.side + " " + req.body.name + "'s losses");
     connection.query(sql, [req.body.id], function (err, res, fields) {
     });
     connection.end;
@@ -47,7 +47,7 @@ let connection = require('./../../Connection.js');
   
   exports.updatePokemonTimesChosen = function(req, res) {
     var sql = "UPDATE Battles SET times_chosen = times_chosen + 1 WHERE id = ?";
-    console.log("Incrementing " + req.body.type + "s times chosen");
+    console.log("Incrementing " + req.body.name + "'s times chosen");
     connection.query(sql, [req.body.id], function (err, res, fields) {
     });
     connection.end;

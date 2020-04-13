@@ -118,11 +118,13 @@ function BattleArea() {
                 // Update the pokemon's times chosen stat
                 let paramsBattle = new URLSearchParams();
                 paramsBattle.append('id', data.id);
+                paramsBattle.append('name', data.name);
                 axios.post( "http://localhost:3306/battles/updateTimesChosen", paramsBattle );
 
                 // Update the pokemon's primary type times chosen stat
                 let paramsType1 = new URLSearchParams();
                 paramsType1.append('type', data.types[0].type.name);
+                paramsType1.append('name', data.name);
                 axios.post( "http://localhost:3306/types/updateTimesChosen", paramsType1 );
 
                 // Update the pokemon's secondary type times chosen stat if present
@@ -130,6 +132,7 @@ function BattleArea() {
                 {
                     let paramsType2 = new URLSearchParams();
                     paramsType2.append('type', data.types[1].type.name);
+                    paramsType2.append('name', data.name);
                     axios.post( "http://localhost:3306/types/updateTimesChosen", paramsType2 );
                 }
 
@@ -142,7 +145,7 @@ function BattleArea() {
                             front_default: data.sprites['front_default'],
                             back_default: data.sprites['back_default'],
                             PrimaryType: data.types[0].type.name,
-                            SecondaryType: null
+                            SecondaryType: "null"
                         });
                     else        // set blue pokemon if it is dual type
                         setBluePokemon({
@@ -162,7 +165,7 @@ function BattleArea() {
                             front_default: data.sprites['front_default'],
                             back_default: data.sprites['back_default'],
                             PrimaryType: data.types[0].type.name,
-                            SecondaryType: null
+                            SecondaryType: "null"
                         });
                     else        // set red pokemon if it is dual type
                         setRedPokemon({
@@ -193,32 +196,44 @@ function BattleArea() {
 
             let paramsBattleWin = new URLSearchParams();    // Update blue pokemon's wins
             paramsBattleWin.append('id', BluePokemon.id);
+            paramsBattleWin.append('name', BluePokemon.name);
+            paramsBattleWin.append('side', "blue");
             axios.post( "http://localhost:3306/battle/updateWins", paramsBattleWin );
 
             let paramsBattleLoss = new URLSearchParams();   // Update red pokemon's losses
             paramsBattleLoss.append('id', RedPokemon.id);
+            paramsBattleLoss.append('name', RedPokemon.name);
+            paramsBattleLoss.append('side', "red");
             axios.post( "http://localhost:3306/battle/updateLosses", paramsBattleLoss );
 
             let paramsBlueType1 = new URLSearchParams();    // Update blue's primary type wins
             paramsBlueType1.append('type', BluePokemon.PrimaryType);
+            paramsBlueType1.append('name', BluePokemon.name);
+            paramsBlueType1.append('side', "blue");
             axios.post( "http://localhost:3306/types/updateWins", paramsBlueType1 );
 
-            if( BluePokemon.SecondaryType != null )
+            if( !(BluePokemon.SecondaryType === "null") )
             {
-                let paramsType2 = new URLSearchParams();    // Update blue's secondary type wins
-                paramsType2.append('type', BluePokemon.SecondaryType);
-                axios.post( "http://localhost:3306/types/updateWins", paramsType2 );
+                let paramsBlueType2 = new URLSearchParams();    // Update blue's secondary type wins
+                paramsBlueType2.append('type', BluePokemon.SecondaryType);
+                paramsBlueType2.append('name', BluePokemon.name);
+                paramsBlueType2.append('side', "blue");
+                axios.post( "http://localhost:3306/types/updateWins", paramsBlueType2 );
             }
 
             let paramsRedType1 = new URLSearchParams();     // Update red's primary type losses
             paramsRedType1.append('type', RedPokemon.PrimaryType);
+            paramsRedType1.append('name', RedPokemon.name);
+            paramsRedType1.append('side', "red");
             axios.post( "http://localhost:3306/types/updateLosses", paramsRedType1 );
 
-            if( RedPokemon.SecondaryType != null ) 
+            if( !(RedPokemon.SecondaryType === "null") )
             {
-                let paramsType2 = new URLSearchParams();    // Update red's secondary type losses
-                paramsType2.append('type', RedPokemon.SecondaryType);
-                axios.post( "http://localhost:3306/types/updateLosses", paramsType2 );
+                let paramsRedType2 = new URLSearchParams();    // Update red's secondary type losses
+                paramsRedType2.append('type', RedPokemon.SecondaryType);
+                paramsRedType2.append('name', RedPokemon.name);
+                paramsRedType2.append('side', "red");
+                axios.post( "http://localhost:3306/types/updateLosses", paramsRedType2 );
             }
 
         }
@@ -233,32 +248,44 @@ function BattleArea() {
 
             let paramsBattleWin = new URLSearchParams();    // Update red pokemon's wins
             paramsBattleWin.append('id', RedPokemon.id);
+            paramsBattleWin.append('name', RedPokemon.name);
+            paramsBattleWin.append('side', "red");
             axios.post( "http://localhost:3306/battle/updateWins", paramsBattleWin );
 
             let paramsBattleLoss = new URLSearchParams();   // Update blue pokemon's losses
             paramsBattleLoss.append('id', BluePokemon.id);
+            paramsBattleLoss.append('name', BluePokemon.name);
+            paramsBattleLoss.append('side', "blue");
             axios.post( "http://localhost:3306/battle/updateLosses", paramsBattleLoss );
 
             let paramsRedType1 = new URLSearchParams();     // Update red's primary type wins
             paramsRedType1.append('type', RedPokemon.PrimaryType);
+            paramsRedType1.append('name', RedPokemon.name);
+            paramsRedType1.append('side', "red");
             axios.post( "http://localhost:3306/types/updateWins", paramsRedType1 );
 
-            if( RedPokemon.SecondaryType != null )
+            if( !(RedPokemon.SecondaryType === "null") )
             {
-                let paramsType2 = new URLSearchParams();    // Update red's secondary type wins
-                paramsType2.append('type', RedPokemon.SecondaryType);
-                axios.post( "http://localhost:3306/types/updateWins", paramsType2 );
+                let paramsRedType2 = new URLSearchParams();    // Update red's secondary type wins
+                paramsRedType2.append('type', RedPokemon.SecondaryType);
+                paramsRedType2.append('name', RedPokemon.name);
+                paramsRedType2.append('side', "red");
+                axios.post( "http://localhost:3306/types/updateWins", paramsRedType2 );
             }
 
             let paramsBlueType1 = new URLSearchParams();    // Update blue's primary type losses
             paramsBlueType1.append('type', BluePokemon.PrimaryType);
+            paramsBlueType1.append('name', BluePokemon.name);
+            paramsBlueType1.append('side', "blue");
             axios.post( "http://localhost:3306/types/updateLosses", paramsBlueType1 );
 
-            if( BluePokemon.SecondaryType != null )
+            if( !(BluePokemon.SecondaryType === "null") )
             {
-                let paramsType2 = new URLSearchParams();    // Update blue's secondary type losses
-                paramsType2.append('type', BluePokemon.SecondaryType);
-                axios.post( "http://localhost:3306/types/updateLosses", paramsType2 );
+                let paramsBlueType2 = new URLSearchParams();    // Update blue's secondary type losses
+                paramsBlueType2.append('type', BluePokemon.SecondaryType);
+                paramsBlueType2.append('name', BluePokemon.name);
+                paramsBlueType2.append('side', "blue");
+                axios.post( "http://localhost:3306/types/updateLosses", paramsBlueType2 );
             }
         }
     }
