@@ -77,15 +77,20 @@ function BattleArea() {
                 getPokemon(true);// get blue pokemon
                 getPokemon(false);// get red pokemon
             }
-            else if( numBlueWins === 3 ) {// blue pokeball counter
+            else if( numBlueWins === 3 )    // blue pokeball counter
                 setWinMessage("Blue Wins!")
+            else if( numRedWins === 3 )     // red pokeball counter
+                setWinMessage("Red Wins!")
+        }
+
+        if( counter === 8 ) {
+            if( numBlueWins === 3 ) {       // blue pokeball counter
                 setNumBlueWins(0);
                 setNumRedWins(0);
                 getPokemon(true);
                 getPokemon(false);
             }
-            else if( numRedWins === 3 ) {// red pokeball counter
-                setWinMessage("Red Wins!")
+            else if( numRedWins === 3 ) {   // red pokeball counter
                 setNumBlueWins(0);
                 setNumRedWins(0);
                 getPokemon(true);
@@ -95,9 +100,9 @@ function BattleArea() {
                 getPokemon(false);
             else if( !blueWins )
                 getPokemon(true);
-        }
+        } 
 
-        if( counter === 7) {
+        if( counter === 7 ) {
             setWinMessage("Fight!")
         }
 
