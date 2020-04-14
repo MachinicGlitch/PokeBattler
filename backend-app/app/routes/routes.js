@@ -31,6 +31,16 @@ module.exports = function(app){
   app.route('/battles/updateTimesChosen')
     .post(urlencodedParser, battles.updatePokemonTimesChosen)
 
+  app.route('/battles/updateCurrentStreak')
+    .post(urlencodedParser, battles.updatePokemonCurrentStreak)
+
+  app.route('/battles/resetCurrentStreak')
+    .post(urlencodedParser, battles.resetPokemonCurrentStreak)
+
+  app.route('/battles/updateBestStreak')
+    .post(urlencodedParser, battles.updatePokemonBestStreak)
+
+
 
   app.route('/types/:type')
     .get(types.getType)
