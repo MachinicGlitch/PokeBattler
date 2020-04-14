@@ -11,6 +11,7 @@ import PokePlatform from '../assets/background.png';
 import Transparent from '../assets/transparent.png';
 import winBall from '../assets/winPoke.png';
 import blankBall from '../assets/losePoke.png';
+import Pokewalker from '../assets/Pokewalker.png';
 
 
 
@@ -59,6 +60,7 @@ function BattleArea() {
         alignItems: "center",
     };
 
+
     var BluePokemonSpriteBack = (Number) (BluePokemon.id);
     var RedPokemonSpriteFront = (Number) (RedPokemon.id);
 
@@ -68,6 +70,7 @@ function BattleArea() {
     const RedLayers = [
         PokePlatform, "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + RedPokemonSpriteFront + ".png", PokeBallTossRed
     ];
+ 
 
     React.useEffect(() => {
         
@@ -402,6 +405,7 @@ function BattleArea() {
         return s.charAt(0).toUpperCase() + s.slice(1)
     }
 
+
     
     return (
         <div className="MainField">
@@ -425,11 +429,18 @@ function BattleArea() {
                     </div>
 
                     {
-                    <img src= {Transparent} width="250" height="250" />
+                    <img src= {Transparent} width="200" height="200" />
                     }
                     
                 </div>
-            <p>Countdown: {counter}</p>
+             
+                 <div class="container">
+                     <img src = {Pokewalker} alt="Timer" width="150" height="150" />
+                    <div class="centered">{counter}</div>
+            
+                 </div>
+                
+
         </div>
     )
 }
