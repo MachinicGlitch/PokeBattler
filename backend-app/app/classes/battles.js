@@ -24,7 +24,8 @@ let connection = require('./../../Connection.js');
     var sql = "INSERT INTO Battles (id, name, wins, losses, times_chosen, best_streak)"
       + " VALUES ( ?, ?, ?, ?, ?, ? )";
     console.log("Inserting Pokemon: " + req.body.name + " with id " + req.body.id);
-    connection.query(sql, [req.body.id, req.body.name, req.body.wins, req.body.losses, req.body.times_chosen, req.body.best_streak], function (err, res, fields) {
+    connection.query(sql, [req.body.id, req.body.name, req.body.wins, req.body.losses, req.body.times_chosen, req.body.best_streak], function (err, response, fields) {
+      res.send(response);
     });
     connection.end;
   }
@@ -32,7 +33,8 @@ let connection = require('./../../Connection.js');
   exports.updatePokemonWins = function(req, res) {
     var sql = "UPDATE Battles SET wins = wins + 1 WHERE id = ?";
     console.log("Incrementing " + req.body.side + " " + req.body.name + "'s wins");
-    connection.query(sql, [req.body.id], function (err, res, fields) {
+    connection.query(sql, [req.body.id], function (err, response, fields) {
+      res.send(response);
     });
     connection.end;
   }
@@ -40,7 +42,11 @@ let connection = require('./../../Connection.js');
   exports.updatePokemonLosses = function(req, res) {
     var sql = "UPDATE Battles SET losses = losses + 1 WHERE id = ?";
     console.log("Incrementing " + req.body.side + " " + req.body.name + "'s losses");
-    connection.query(sql, [req.body.id], function (err, res, fields) {
+    connection.query(sql, [req.body.id], function (err, response, fields) {
+      /*if success
+          connection.querry increase wins  
+      */
+      res.send(response);
     });
     connection.end;
   }
@@ -48,7 +54,35 @@ let connection = require('./../../Connection.js');
   exports.updatePokemonTimesChosen = function(req, res) {
     var sql = "UPDATE Battles SET times_chosen = times_chosen + 1 WHERE id = ?";
     console.log("Incrementing " + req.body.name + "'s times chosen");
-    connection.query(sql, [req.body.id], function (err, res, fields) {
+    connection.query(sql, [req.body.id], function (err, response, fields) {
+      res.send(response);
+    });
+    connection.end;
+  }
+
+  exports.updatePokemonCurrentStreak = function(req, res) {
+    var sql = "UPDATE Battles SET current_streak = current_streak + 1 WHERE id = ?";
+    console.log("Incrementing " + req.body.name + "'s current streak");
+    connection.query(sql, [req.body.id], function (err, response, fields) {
+      res.send(response);
+    });
+    connection.end;
+  }
+
+  exports.resetPokemonCurrentStreak = function(req, res) {
+    var sql = "UPDATE Battles SET current_streak = 0 WHERE id = ?";
+    console.log("Resetting " + req.body.name + "'s current streak");
+    connection.query(sql, [req.body.id], function (err, response, fields) {
+      res.send(response);
+    });
+    connection.end;
+  }
+
+  exports.updatePokemonBestStreak = function(req, res) {
+    var sql = "UPDATE Battles SET best_streak = current_streak WHERE id = ?";
+    console.log("Updating " + req.body.name + "'s current streak");
+    connection.query(sql, [req.body.id], function (err, response, fields) {
+      res.send(response);
     });
     connection.end;
   }
