@@ -6,6 +6,7 @@ var P = new Pokedex();
 exports.getPokemon = function(req, res) {
   P.getPokemonByName(req.params.id)
     .then(function(response) {
+      console.log("Retrieving Pokemon " + req.params.id + ": " + response.name);
       res.send(response)
     })
     .catch(function(error) {
