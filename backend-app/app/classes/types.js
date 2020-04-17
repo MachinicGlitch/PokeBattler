@@ -9,6 +9,7 @@ exports.getType = function(req, res) {
     })
     .catch(function(error) {
       console.log('There was an ERROR: ', error);
+      res.send(response)
     });
 }
 
