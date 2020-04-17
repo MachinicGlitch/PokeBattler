@@ -7,8 +7,9 @@ exports.getType = function (req, res) {
     .then(function (response) {
       res.send(response);
     })
-    .catch(function (error) {
-      console.log("There was an ERROR: ", error);
+    .catch(function(error) {
+      console.log('There was an ERROR: ', error);
+      res.send(response)
     });
 };
 
@@ -37,9 +38,7 @@ exports.insertType = function (req, res) {
 
 exports.updateTypeWins = function (req, res) {
   var sql = "UPDATE Types SET wins = wins + 1 WHERE type = ?";
-  console.log(
-    "Incrementing " + req.body.side + " " + req.body.type + "'s wins"
-  );
+  console.log("Incrementing " + req.body.side + " " + req.body.type + " (" + req.body.name +")'s wins");
   connection.query(sql, [req.body.type], function (err, response, fields) {
     res.send(response);
   });
