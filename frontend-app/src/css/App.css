@@ -15,7 +15,7 @@
 
 .App-header {
   height: 70vh;
-  background: linear-gradient(105deg, #236B8E 50%, #EE6363 50%)
+  background: linear-gradient(105deg, #236b8e 50%, #ee6363 50%);
 }
 
 .App-body {
@@ -33,11 +33,12 @@
   position: relative;
   padding: 8px 8px 32px 8px;
   height: 75vh;
-  background: linear-gradient(105deg, #236B8E 50%, #EE6363 50%)
+  background: linear-gradient(105deg, #236b8e 50%, #ee6363 50%);
 }
 
 .Border:after {
-  background: linear-gradient(-45deg, #2a2a32 16px, transparent 0), linear-gradient(45deg, #2a2a32 16px, transparent 0);
+  background: linear-gradient(-45deg, #2a2a32 16px, transparent 0),
+    linear-gradient(45deg, #2a2a32 16px, transparent 0);
   background-position: left-bottom;
   background-repeat: repeat-x;
   background-size: 32px 32px;
@@ -56,10 +57,11 @@
   height: 100%;
 }
 
-
 .App-link {
   color: #61dafb;
 }
 
-
-
+.GraphTabs {
+  background-color: #2a2a32;
+  margin-top: 0%;
+}

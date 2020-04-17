@@ -1,35 +1,33 @@
-.MainField{
-    font-size: 230%;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    color: white;
-    text-shadow: -1px 1px 0 #000,
-				  1px 1px 0 #000,
-				  1px -1px 0 #000;
+.MainField {
+  font-size: 230%;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  color: white;
+  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000;
 }
-.BluePokeWins{
-    width: 100px;
+.BluePokeWins {
+  width: 100px;
 
-    float: left;
+  float: left;
 }
 .BluePokeWins img {
-    width: 70px;
+  width: 70px;
 }
-.RedPokeWins{
-    width: 100px;
-    float: right;
+.RedPokeWins {
+  width: 100px;
+  float: right;
 }
 .RedPokeWins img {
-    width: 70px;
+  width: 70px;
 }
 
 .container {
-    position: relative;
-    text-align: center;
-    color: white;
-  }
-  .centered {
-    position: absolute;
-    top: 45%; 
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+  position: relative;
+  text-align: center;
+  color: white;
+}
+.centered {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
