@@ -11,6 +11,7 @@ import PokePlatform from '../assets/background.png';
 import Transparent from '../assets/transparent.png';
 import winBall from '../assets/winPoke.png';
 import blankBall from '../assets/losePoke.png';
+import Pokewalker from '../assets/Pokewalker.png';
 
 
 function BattleArea() {
@@ -447,11 +448,15 @@ function BattleArea() {
                     </div>
 
                     {
-                    <img src= {Transparent} width="250" height="250" />
+                    <img src= {Transparent} width="200" height="200" />
                     }
                     
                 </div>
-            <p>Countdown: {counter}</p>
+              <p>Countdown: {counter}</p>
+              <div class="container">
+                 <img src = {Pokewalker} alt="Timer" width="150" height="150" />
+                 <div class="centered">{counter}</div>
+              </div>
         </div>
     )
 }
