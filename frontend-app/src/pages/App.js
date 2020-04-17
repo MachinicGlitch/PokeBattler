@@ -1,8 +1,7 @@
-import React from 'react';
-import BattleArea from './../components/BattleArea';
-import Stats from './../components/Stats';
-import './../css/App.css';
-
+import React from "react";
+import BattleArea from "./../components/BattleArea";
+import GraphTabs from "./../components/GraphTabs";
+import "./../css/App.css";
 
 function App() {
   return (
@@ -11,8 +10,8 @@ function App() {
         <BattleArea />
       </div>
 
-      <div className="Statistics">
-        <Stats />
+      <div className="GraphTabs">
+        <GraphTabs />
       </div>
     </div>
   );
