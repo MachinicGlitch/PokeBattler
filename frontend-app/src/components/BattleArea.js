@@ -452,7 +452,6 @@ function BattleArea() {
                     }
                     
                 </div>
-              <p>Countdown: {counter}</p>
               <div class="container">
                  <img src = {Pokewalker} alt="Timer" width="150" height="150" />
                  <div class="centered">{counter}</div>
