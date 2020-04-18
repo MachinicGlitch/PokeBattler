@@ -10,9 +10,11 @@ class WinsByTrainer extends Component {
       data: [],
     };
   }
+
   chartRef = React.createRef();
-  componentDidMount() {
-    axios.get("http://localhost:3306/trainers").then((res) => {
+
+  async componentDidMount() {
+    await axios.get("http://localhost:3306/trainers").then((res) => {
       this.setState(
         res.data.map((row) => {
           console.log(row);
@@ -21,6 +23,7 @@ class WinsByTrainer extends Component {
         })
       );
     });
+
     const myChartRef = this.chartRef.current.getContext("2d");
 
     new Chart(myChartRef, {
@@ -39,8 +42,10 @@ class WinsByTrainer extends Component {
       options: {},
     });
   }
+
   render() {
     return <div>{<canvas id="myChart" ref={this.chartRef} />}</div>;
   }
 }
+
 export default WinsByTrainer;
