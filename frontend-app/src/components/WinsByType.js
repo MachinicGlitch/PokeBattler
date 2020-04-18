@@ -8,7 +8,7 @@ class WinsByType extends Component {
     this.state = {
       labels: [],
       data: [],
-      colors: []
+      colors: [],
     };
   }
 
@@ -36,11 +36,18 @@ class WinsByType extends Component {
           {
             label: "Wins by Type",
             data: this.state.data,
-            backgroundColor: this.state.colors
+            backgroundColor: this.state.colors,
           },
         ],
       },
-      options: {},
+      options: {
+        legend: {
+          labels: {
+            fontColor: "white",
+            fontSize: 14,
+          },
+        },
+      },
     });
   }
 

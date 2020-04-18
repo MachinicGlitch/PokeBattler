@@ -9,7 +9,7 @@ import Box from "@material-ui/core/Box";
 import BarGraph from ".././components/BarGraph";
 import DoughnutGraph from ".././components/DoughnutGraph";
 import PieGraph from ".././components/PieGraph";
-
+import "../css/Stats.css";
 
 TabPanel.propTypes = {
   children: PropTypes.node,
@@ -17,14 +17,12 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.text.default,
   },
 }));
-
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -43,14 +41,12 @@ function TabPanel(props) {
   );
 }
 
-
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
-
 
 export default function SimpleTabs() {
   const classes = useStyles();
@@ -75,18 +71,20 @@ export default function SimpleTabs() {
           <Tab label="Trainer" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
-        <h1>Winstreak by Pokemon</h1>
-        <BarGraph />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <h1>Wins by Pokemon Type</h1>
-        <DoughnutGraph />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <h1>Wins by Trainer Team</h1>
-        <PieGraph />
-      </TabPanel>
+      <div className="tabsText">
+        <TabPanel value={value} index={0}>
+          <h1>Winstreak by Pokemon</h1>
+          <BarGraph />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <h1>Wins by Pokemon Type</h1>
+          <DoughnutGraph />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <h1>Wins by Trainer Team</h1>
+          <PieGraph />
+        </TabPanel>
+      </div>
     </div>
   );
 }

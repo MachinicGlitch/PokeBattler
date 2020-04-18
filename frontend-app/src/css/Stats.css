@@ -1,6 +1,10 @@
 .doughnut {
-    padding-bottom: 20px;
+  padding-bottom: 20px;
 }
 .pie {
-    padding-bottom: 20px;
+  padding-bottom: 20px;
+}
+
+.tabsText {
+  color: whitesmoke;
 }
