@@ -39,7 +39,14 @@ class WinsByTrainer extends Component {
           },
         ],
       },
-      options: {},
+      options: {
+        legend: {
+          labels: {
+            fontColor: "white",
+            fontSize: 14,
+          },
+        },
+      },
     });
   }
 
