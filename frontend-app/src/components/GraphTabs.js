@@ -10,6 +10,22 @@ import BarGraph from ".././components/BarGraph";
 import DoughnutGraph from ".././components/DoughnutGraph";
 import PieGraph from ".././components/PieGraph";
 
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
+
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -27,11 +43,6 @@ function TabPanel(props) {
   );
 }
 
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
 
 function a11yProps(index) {
   return {
@@ -40,12 +51,6 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.text.default,
-  },
-}));
 
 export default function SimpleTabs() {
   const classes = useStyles();
@@ -59,7 +64,7 @@ export default function SimpleTabs() {
     <div className={classes.root}>
       <AppBar position="static">
         <Tabs
-          TabIndicatorProps={{ style: { background: "gray" } }}
+          TabIndicatorProps={{ style: { background: "#282c34" } }}
           centered
           value={value}
           onChange={handleChange}

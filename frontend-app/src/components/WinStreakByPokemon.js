@@ -10,9 +10,11 @@ class WinStreakByPokemon extends Component {
       data: [],
     };
   }
+
   chartRef = React.createRef();
-  componentDidMount() {
-    axios.get("http://localhost:3306/battles/top10BestStreaks").then((res) => {
+
+  async componentDidMount() {
+    await axios.get("http://localhost:3306/battles/top10BestStreaks").then((res) => {
       this.setState(
         res.data.map((row) => {
           console.log(row);
@@ -21,6 +23,7 @@ class WinStreakByPokemon extends Component {
         })
       );
     });
+
     const myChartRef = this.chartRef.current.getContext("2d");
 
     new Chart(myChartRef, {
@@ -65,4 +68,5 @@ class WinStreakByPokemon extends Component {
     return <div>{<canvas id="myChart" ref={this.chartRef} />}</div>;
   }
 }
+
 export default WinStreakByPokemon;
