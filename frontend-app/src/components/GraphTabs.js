@@ -9,7 +9,7 @@ import Box from "@material-ui/core/Box";
 import BarGraph from ".././components/BarGraph";
 import DoughnutGraph from ".././components/DoughnutGraph";
 import PieGraph from ".././components/PieGraph";
-import "../css/Stats.css";
+import "../css/App.css";
 
 TabPanel.propTypes = {
   children: PropTypes.node,
