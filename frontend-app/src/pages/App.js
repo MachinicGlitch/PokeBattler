@@ -1,6 +1,7 @@
 import React from "react";
 import BattleArea from "./../components/BattleArea";
 import GraphTabs from "./../components/GraphTabs";
+import PokmonBattler from "../assets/PokmonBattler.png";
 import "./../css/App.css";
 
 function App() {
@@ -8,7 +9,7 @@ function App() {
     <div className="App">
       <header className="Header">
         {" "}
-        Welcome to the Pokemon Battle Simulator!
+        <img className="Logo" src={PokmonBattler} alt="PokmonBattler" />
       </header>
       <div className="Border">
         <BattleArea />
