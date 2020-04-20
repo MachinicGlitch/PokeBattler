@@ -24,6 +24,9 @@
   text-align: center;
   color: white;
   bottom: 450px;
+  left: 800px;
+  width: 250px;
+  height: auto;
 }
 .centered {
   position: absolute;
@@ -31,3 +34,4 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.RedSpriteContainer img{}
