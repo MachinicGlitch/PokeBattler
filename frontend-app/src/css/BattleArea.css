@@ -23,10 +23,8 @@
   position: relative;
   text-align: center;
   color: white;
-  bottom: 450px;
-  left: 800px;
-  width: 250px;
-  height: auto;
+  bottom: 50vh;
+  right: 2vw;
 }
 .centered {
   position: absolute;

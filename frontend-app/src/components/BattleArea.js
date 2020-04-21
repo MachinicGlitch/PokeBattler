@@ -14,7 +14,9 @@ import blankBall from '../assets/losePoke.png';
 import Pokewalker from '../assets/Pokewalker.png';
 
 
+
 function BattleArea() {
+    
     let [winMessage, setWinMessage] = React.useState('Get Ready Trainers!');
     let [counter, setCounter] = React.useState(10);
     let [numBlueWins, setNumBlueWins] = React.useState(0);
@@ -129,7 +131,7 @@ function BattleArea() {
             setCounter(10)
         }
 
-        const timer = counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
+    const timer = counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
     }, [counter]);
 
     const getPokemon = ( isBlue ) => {
