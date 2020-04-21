@@ -9,6 +9,11 @@ import Box from "@material-ui/core/Box";
 import BarGraph from ".././components/BarGraph";
 import DoughnutGraph from ".././components/DoughnutGraph";
 import PieGraph from ".././components/PieGraph";
+import WinstreakByPokmonImg from "../assets/Winstreak-by-Pokemon.png";
+import WinsByPokmonTypeImg from "../assets/Wins-by-Pokmon-Type.png";
+import WinsByTrainerTeamImg from "../assets/Wins-by-Trainer-Team.png";
+
+import "../css/GraphTabs.css";
 import "../css/App.css";
 
 TabPanel.propTypes = {
@@ -73,15 +78,19 @@ export default function SimpleTabs() {
       </AppBar>
       <div className="tabsText">
         <TabPanel value={value} index={0}>
-          <h1>Winstreak by Pokemon</h1>
+          <img
+            className="Winstreak"
+            src={WinstreakByPokmonImg}
+            alt="winstreak"
+          />
           <BarGraph />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <h1>Wins by Pokemon Type</h1>
+          <img className="Type" src={WinsByPokmonTypeImg} alt="type" />
           <DoughnutGraph />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <h1>Wins by Trainer Team</h1>
+          <img className="Team" src={WinsByTrainerTeamImg} alt="trainer" />
           <PieGraph />
         </TabPanel>
       </div>
