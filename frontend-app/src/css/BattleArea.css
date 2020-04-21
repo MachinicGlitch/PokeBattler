@@ -19,12 +19,21 @@
   width: 70px;
 }
 
-.container {
+/* .container {
   position: relative;
   text-align: center;
   color: white;
   bottom: 50vh;
   right: 2vw;
+} */
+.container {
+  position: relative;
+  text-align: center;
+  color: white;
+  bottom: 450px;
+  left: 800px;
+  width: 250px;
+  height: auto;
 }
 .centered {
   position: absolute;
