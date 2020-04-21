@@ -434,7 +434,7 @@ function BattleArea() {
                 {showPokeballs(true)}
                 {showPokeballs(false)}
                 <div align="left">
-                    <div align="right">
+                    <div class="RedSpriteContainer" align="right">
                         
                         <img src={TrainerRed} alt="Red Trainer Sprite" hspace="0"  vspace="0" width="400" height="400" />
                         <div style={RedStyle}>
@@ -455,7 +455,7 @@ function BattleArea() {
                     
                 </div>
               <div class="container">
-                 <img src = {Pokewalker} alt="Timer" width="150" height="150" />
+                 <img src = {Pokewalker} alt="Timer" width="150" height="150" display="hidden"/>
                  <div class="centered">{counter}</div>
               </div>
         </div>

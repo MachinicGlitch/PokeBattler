@@ -39,16 +39,16 @@ class WinStreakByPokemon extends Component {
             label: "Lead Pokemon: " + this.state.labels[0],
             data: this.state.data,
             backgroundColor: [
-              "#FCC201",
-              "#D8D8D8",
-              "#CD7F32",
-              "#FF0000",
-              "#FF7F00",
-              "#FFFF00",
-              "#00FF00",
-              "#0000FF",
-              "#4B0082",
-              "#9400D3",
+              "#FCC201",  //gold
+              "#D8D8D8",  //silver
+              "#CD7F32",  //bronze
+              "#17A0DA",
+              "#148FC3",
+              "#1382B1",
+              "#1179A4",
+              "#0F6C93",
+              "#0D5D7E",
+              "#0B4C67",
             ],
           },
         ],
