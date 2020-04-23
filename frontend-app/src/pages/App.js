@@ -3,13 +3,18 @@ import BattleArea from "./../components/BattleArea";
 import GraphTabs from "./../components/GraphTabs";
 import PokmonBattler from "../assets/PokmonBattler.png";
 import "./../css/App.css";
+import OPSong from '../assets/101-opening.mp3';
+
 
 function App() {
   return (
     <div className="App">
       <header className="Header">
-        {" "}
+        
         <img className="Logo" src={PokmonBattler} alt="PokmonBattler" />
+        <audio controls className="audio" loop>
+            <source src={OPSong} type="audio/mpeg"></source>
+        </audio>
       </header>
       <div className="Border">
         <BattleArea />

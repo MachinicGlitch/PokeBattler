@@ -5,6 +5,8 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+  /* align-items: center; */
+   /* padding-right: 1000px;  */
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -76,4 +78,10 @@
 
 .Logo {
   height: 12vh;
+}
+
+.audio{
+  /* padding-left: 20%; */
+  padding-left: 50%;
+  padding-bottom: 1%;
 }
