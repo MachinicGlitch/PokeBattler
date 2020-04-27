@@ -12,8 +12,6 @@ import Transparent from '../assets/transparent.png';
 import winBall from '../assets/winPoke.png';
 import blankBall from '../assets/losePoke.png';
 import Pokewalker from '../assets/Pokewalker.png';
-import OPSong from '../assets/101-opening.mp3';
-
 
 
 function BattleArea() {
@@ -41,17 +39,17 @@ function BattleArea() {
        });
 
     const BlueStyle = {
-        position: "absolute",
-        top: 400, 
-        right: 700,
-        bottom: 0,
-        left: 0,
+        position: "absolute",   //absolute
+        top: 400,   //400
+        right: 700, //700   
+        bottom: 0,  //0
+        left: 0,    //0
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         };
     const RedStyle = {
-        position: "absolute",
+        position: "absolute",     //absolute
         top: 0,
         right: 0,
         bottom: 100,
@@ -432,9 +430,6 @@ function BattleArea() {
     return (
         <div className="MainField">
 
-                {/* <audio controls>
-                    <source src={OPSong} type="audio/mpeg"></source>
-                </audio> */}
                 <p> { winMessage } </p>
                 {showPokeballs(true)}
                 {showPokeballs(false)}

@@ -40,7 +40,7 @@ let connection = require('./../../Connection.js');
   }
   
   exports.updatePokemonBestStreak = function(req, res) {
-    sql = "UPDATE Battles SET best_streak = current_streak WHERE id = ? AND current_streak > best_streak";
+    var sql = "UPDATE Battles SET best_streak = current_streak WHERE id = ? AND current_streak > best_streak";
     console.log("Checking " + req.body.name + "'s best streak...");
     connection.query(sql, [req.body.id], function (err, response, fields) {
       res.send(response);
