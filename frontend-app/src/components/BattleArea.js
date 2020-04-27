@@ -207,13 +207,99 @@ function BattleArea() {
                 }
             })
             .catch((error) => {
-                console.log(error)
+                console.log(error);
             })
+
+    }
+
+    const checkTypes = (data, type) => {
+
+        for( int i = 0; i < data.double_damage_to); i++ ) {
+            if( data.double_damage_to[i].name === type )
+            {
+                return 2;
+            }
+        }
+        for( int i = 0; i < data.half_damage_to; i++ ) {
+            if( data.half_damage_to[i].name === type )
+                return .5;
+        }
+        for( int i = 0; i < data.no_damage_to; i++ ) {
+            if( data.no_damage_to[i].name === type )
+                return 0;
+        }
+
+        return 1;
     }
 
 
+    const checkEffectiveness = ( type, side ) => {
+        axios.get( "http://localhost:3306/types/" + type )
+            .then(res => {
+                const data = res.data.damage_relations;
+                console.log(data);
+                let effectiveness;
+
+                if( side === "blue" ) {
+                    effectiveness = checkTypes(data, RedPokemon.PrimaryType);
+                    if( RedPokemon.SecondaryType !== "null" )
+                    {
+                        effectiveness *= echeckTypes(data, Redpokemon.SecondaryType);
+                        return effectiveness;
+                    }
+                }
+                else {
+                    effectiveness = checkTypes(data, BluePokemon.PrimaryType);
+                    if( BluePokemon.SecondaryType !== "null" )
+                    {
+                        effectiveness *= checkTypes(data, BluePokemon.SecondaryType);
+                        return effectiveness;
+                    }
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        return 1;
+    }
+
+
+
+    const calculateEffectiveness = () => {
+
+        let BlueEffectiveness;
+        let RedEffectiveness;
+
+        BlueEffectiveness = checkEffectiveness( BluePokemon.PrimaryType, "blue" );
+        if( BluePokemon.SecondaryType !== "null" )
+        {
+            BlueEffectiveness *= checkEffectiveness( BluePokemon.SecondaryType, "blue" )
+        }
+
+        RedEffectiveness = checkEffectiveness( RedPokemon.PrimaryType,"red" );
+        if( RedPokemon.SecondaryType !== "null" )
+        {
+            RedEffectiveness *= checkEffectiveness( RedPokemon.SecondaryType, "red" )
+        }
+        
+        
+        if( BlueEffectiveness > RedEffectiveness ) {
+            return true;
+        }
+        else if(BlueEffectiveness < RedEffectiveness ) {
+            return false;
+        }
+        else if( Math.random() < 0.5 ) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
     const chooseWinner = () => {
-        if (Math.random() < 0.5) {  // If blue wins
+        if ( calculateEffectiveness() ) {  // If blue wins
             console.log("Blue Chosen as winner")
             setBlueWins(true)
             setWinMessage("Blue's " + capitalize(BluePokemon.name) + " Wins!")
@@ -242,7 +328,7 @@ function BattleArea() {
             paramsBlueType1.append('side', "blue");
             axios.post( "http://localhost:3306/types/updateWins", paramsBlueType1 );
 
-            if( !(BluePokemon.SecondaryType === "null") )
+            if( BluePokemon.SecondaryType !== "null" )
             {
                 let paramsBlueType2 = new URLSearchParams();    // Update blue's secondary type wins
                 paramsBlueType2.append('type', BluePokemon.SecondaryType);
@@ -257,7 +343,7 @@ function BattleArea() {
             paramsRedType1.append('side', "red");
             axios.post( "http://localhost:3306/types/updateLosses", paramsRedType1 );
 
-            if( !(RedPokemon.SecondaryType === "null") )
+            if( RedPokemon.SecondaryType !== "null" )
             {
                 let paramsRedType2 = new URLSearchParams();    // Update red's secondary type losses
                 paramsRedType2.append('type', RedPokemon.SecondaryType);
@@ -295,7 +381,7 @@ function BattleArea() {
             paramsRedType1.append('side', "red");
             axios.post( "http://localhost:3306/types/updateWins", paramsRedType1 );
 
-            if( !(RedPokemon.SecondaryType === "null") )
+            if( RedPokemon.SecondaryType !== "null" )
             {
                 let paramsRedType2 = new URLSearchParams();    // Update red's secondary type wins
                 paramsRedType2.append('type', RedPokemon.SecondaryType);
@@ -310,7 +396,7 @@ function BattleArea() {
             paramsBlueType1.append('side', "blue");
             axios.post( "http://localhost:3306/types/updateLosses", paramsBlueType1 );
 
-            if( !(BluePokemon.SecondaryType === "null") )
+            if( BluePokemon.SecondaryType !== "null" )
             {
                 let paramsBlueType2 = new URLSearchParams();    // Update blue's secondary type losses
                 paramsBlueType2.append('type', BluePokemon.SecondaryType);
