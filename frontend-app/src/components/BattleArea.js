@@ -21,6 +21,8 @@ function BattleArea() {
     let [numBlueWins, setNumBlueWins] = React.useState(0);
     let [numRedWins, setNumRedWins] = React.useState(0);
     let [blueWins, setBlueWins] = React.useState(null);     // null = start of loading, true = blue wins, false = red wins
+    let [BlueEffectiveness, setBlueEffectiveness] = React.useState(1);
+    let [RedEffectiveness, setRedEffectiveness] = React.useState(1);
     let [BluePokemon, setBluePokemon] = React.useState({
          id: '',
          name: '',
@@ -37,7 +39,6 @@ function BattleArea() {
         PrimaryType: '',
         SecondaryType: ''
        });
-
     const BlueStyle = {
         position: "absolute",   //absolute
         top: 400,   //400
@@ -58,7 +59,6 @@ function BattleArea() {
         justifyContent: "center",
         alignItems: "center",
     };
-
     var BluePokemonSpriteBack = (Number) (BluePokemon.id);
     var RedPokemonSpriteFront = (Number) (RedPokemon.id);
 
@@ -92,8 +92,11 @@ function BattleArea() {
         }
 
         if( counter === 8 ) {
+            setBlueEffectiveness(1);
+            setRedEffectiveness(1);
+
             if( blueWins === null ) {
-                console.log("testing thing");
+                console.log("Start of counter");
             }
             else if( numBlueWins === 3 ) {       // blue pokeball counter
                 console.log("Blue wins match, resetting counters");
@@ -120,8 +123,11 @@ function BattleArea() {
         } 
 
         if( counter === 7 ) {
-            console.log("Setting fight message");
             setWinMessage("Fight!")
+        }
+
+        if ( counter === 3 ) {
+            calculateEffectiveness()
         }
 
         if (counter === 0) {
@@ -134,7 +140,6 @@ function BattleArea() {
     }, [counter]);
 
     const getPokemon = ( isBlue ) => {
-        console.log("Start of get pokemon");
         axios.get( "http://localhost:3306/pokemon/" + (Math.floor(Math.random() * 151) + 1) )
             .then(res => {
                 const data = res.data;
@@ -162,7 +167,7 @@ function BattleArea() {
 
                 
                 if( isBlue ) {  // set blue pokemon if it is mono type
-                    if( data.types.length === 1) 
+                    if( data.types.length === 1) {
                         setBluePokemon({
                             id: data.id,
                             name: data.name,
@@ -171,7 +176,9 @@ function BattleArea() {
                             PrimaryType: data.types[0].type.name,
                             SecondaryType: "null"
                         });
-                    else        // set blue pokemon if it is dual type
+                        console.log(data.name + " (" + data.types[0].type.name + ") for blue side");
+                    }
+                    else {        // set blue pokemon if it is dual type
                         setBluePokemon({
                             id: data.id,
                             name: data.name,
@@ -180,10 +187,11 @@ function BattleArea() {
                             PrimaryType: data.types[0].type.name,
                             SecondaryType: data.types[1].type.name
                         });
-                    console.log("Selecting " + data.name + " for blue side");
+                        console.log(data.name + " (" + data.types[0].type.name + ", " + data.types[1].type.name + ") for blue side");
+                    }
                 }
                 else {          // set red pokemon if it is mono type
-                    if( data.types.length === 1)
+                    if( data.types.length === 1) {
                         setRedPokemon({
                             id: data.id,
                             name: data.name,
@@ -192,7 +200,9 @@ function BattleArea() {
                             PrimaryType: data.types[0].type.name,
                             SecondaryType: "null"
                         });
-                    else        // set red pokemon if it is dual type
+                        console.log(data.name + " (" + data.types[0].type.name + ") for red side");
+                    }
+                    else {       // set red pokemon if it is dual type
                         setRedPokemon({
                             id: data.id,
                             name: data.name,
@@ -201,17 +211,208 @@ function BattleArea() {
                             PrimaryType: data.types[0].type.name,
                             SecondaryType: data.types[1].type.name
                         });
-                    console.log("Selecting " + data.name + " for red side");
+                        console.log(data.name + " (" + data.types[0].type.name + ", " + data.types[1].type.name + ") for red side");
+                    }
                 }
             })
             .catch((error) => {
-                console.log(error)
+                console.log(error);
+            })
+
+    }
+
+
+    const checkEffectiveness = async ( typeName, side ) =>  {
+        await axios.get( "http://localhost:3306/types/" + typeName )
+            .then(res => {
+                const data = res.data.damage_relations;
+                console.log(typeName + " data type relations")
+                console.log(data)
+
+                let effectiveness = 1;
+
+                let notFound = true;
+
+                if( side === "blue" ) { // If the side is blue
+                    // Caclulate the Effectiveness against red's first type
+                    for( let i = 0; i < data.double_damage_to.length && notFound; i++ ) {
+                        if( data.double_damage_to[i].name === RedPokemon.PrimaryType )
+                        {
+                            console.log(typeName + " x2 vs " + data.double_damage_to[i].name);
+                            notFound = false;
+                            effectiveness *= 2;
+                        }
+                    }
+                    for( let i = 0; i < data.half_damage_to.length && notFound; i++ ) {
+                        if( data.half_damage_to[i].name === RedPokemon.PrimaryType ) {
+                            console.log(typeName + " x1/2 vs " + data.half_damage_to[i].name);
+                            notFound = false;
+                            effectiveness *= .5;
+                        }
+                    }
+                    for( let i = 0; i < data.no_damage_to.length && notFound; i++ ) {
+                        if( data.no_damage_to[i].name === RedPokemon.PrimaryType ) {
+                            console.log(typeName + " x0 vs " + data.no_damage_to[i].name);
+                            notFound = false;
+                            effectiveness *= 0;
+                        }
+                    }
+                    if( notFound ) { 
+                        console.log(typeName + " x1 vs " + RedPokemon.PrimaryType);
+                    }
+                    
+                    notFound = true;
+
+                    if( RedPokemon.SecondaryType !== "null" ) { 
+                        // Caclulate the Effectiveness against red's second type
+                        for( let i = 0; i < data.double_damage_to.length && notFound; i++ ) {
+                            if( data.double_damage_to[i].name === RedPokemon.SecondaryType )
+                            {
+                                console.log(typeName + " x2 vs " + data.double_damage_to[i].name);
+                                notFound = false;
+                                effectiveness *= 2;
+                            }
+                        }
+                        for( let i = 0; i < data.half_damage_to.length && notFound; i++ ) {
+                            if( data.half_damage_to[i].name === RedPokemon.SecondaryType ) {
+                                console.log(typeName + " x1/2 vs " + data.half_damage_to[i].name);
+                                notFound = false;
+                                effectiveness *= .5;
+                            }
+                        }
+                        for( let i = 0; i < data.no_damage_to.length && notFound; i++ ) {
+                            if( data.no_damage_to[i].name === RedPokemon.SecondaryType ) {
+                                console.log(typeName + " x0 vs " + data.no_damage_to[i].name);
+                                notFound = false;
+                                effectiveness *= 0;
+                            }
+                        }
+                        if( notFound ) { 
+                            console.log(typeName + " x1 vs " + RedPokemon.SecondaryType);
+                        }
+                    }
+
+                    let temp = BlueEffectiveness * effectiveness;
+                    console.log(temp) 
+                    setBlueEffectiveness( temp )
+                }
+                else {  // If the side is Red
+                    // Caclulate the Effectiveness against blue's first type
+                    for( let i = 0; i < data.double_damage_to.length && notFound; i++ ) {
+                        if( data.double_damage_to[i].name === BluePokemon.PrimaryType )
+                        {
+                            console.log(typeName + " x2 vs " + data.double_damage_to[i].name);
+                            notFound = false;
+                            effectiveness *= 2;
+                        }
+                    }
+                    for( let i = 0; i < data.half_damage_to.length && notFound; i++ ) {
+                        if( data.half_damage_to[i].name === BluePokemon.PrimaryType ) {
+                            console.log(typeName + " x1/2 vs " + data.half_damage_to[i].name);
+                            notFound = false;
+                            effectiveness *= .5;
+                        }
+                    }
+                    for( let i = 0; i < data.no_damage_to.length && notFound; i++ ) {
+                        if( data.no_damage_to[i].name === BluePokemon.PrimaryType ) {
+                            console.log(typeName + " x0 vs " + data.no_damage_to[i].name);
+                            notFound = false;
+                            effectiveness *= 0;
+                        }
+                    }
+                    if( notFound ) { 
+                        console.log(typeName + " x1 vs " + BluePokemon.PrimaryType);
+                    }
+
+                    notFound = true;
+
+                    if( BluePokemon.SecondaryType !== "null" ){
+                        // Caclulate the Effectiveness against blue's second type
+                        for( let i = 0; i < data.double_damage_to.length && notFound; i++ ) {
+                            if( data.double_damage_to[i].name === BluePokemon.SecondaryType )
+                            {
+                                console.log(typeName + " x2 vs " + data.double_damage_to[i].name);
+                                notFound = false;
+                                effectiveness *= 2;
+                            }
+                        }
+                        for( let i = 0; i < data.half_damage_to.length && notFound; i++ ) {
+                            if( data.half_damage_to[i].name === BluePokemon.SecondaryType ) {
+                                console.log(typeName + " x1/2 vs " + data.half_damage_to[i].name);
+                                notFound = false;
+                                effectiveness *= .5
+                            }
+                        }
+                        for( let i = 0; i < data.no_damage_to.length && notFound; i++ ) {
+                            if( data.no_damage_to[i].name === BluePokemon.SecondaryType ) {
+                                console.log(typeName + " x0 vs " + data.no_damage_to[i].name);
+                                notFound = false;
+                                effectiveness *= 0;
+                            }
+                        }
+                        if( notFound ) { 
+                            console.log(typeName + " x1 vs " + BluePokemon.SecondaryType);
+                        } 
+                    }  
+                    let temp = RedEffectiveness * effectiveness;
+                    console.log(temp) 
+                    setRedEffectiveness( temp )
+                }
+
+                console.log("Calculated effectiveness of " + side + " " + effectiveness );
+            })
+            .catch((error) => {
+                console.log(error);
             })
     }
 
 
+
+    const calculateEffectiveness = async () => {
+
+
+        await checkEffectiveness( BluePokemon.PrimaryType, "blue" );
+        if( BluePokemon.SecondaryType !== "null" )
+        {
+            await checkEffectiveness( BluePokemon.SecondaryType, "blue" );
+        }
+
+        await checkEffectiveness( RedPokemon.PrimaryType,"red" );
+        if( RedPokemon.SecondaryType !== "null" )
+        {
+            await checkEffectiveness( RedPokemon.SecondaryType, "red" );
+        }
+    }
+
+
+    const compareEffectiveness = () => {
+
+        console.log("Blue: ");
+        console.log(BlueEffectiveness);
+        console.log("Red: ");
+        console.log(RedEffectiveness);
+
+        if( BlueEffectiveness > RedEffectiveness ) {
+            console.log("BLUE EFFECTIVE WINNER: " + BluePokemon.name);
+            return true;
+        }
+        else if( BlueEffectiveness < RedEffectiveness ) {
+            console.log("RED EFFECTIVE WINNER: " + BluePokemon.name);
+            return false;
+        }
+        else if( Math.random() <= 0.5 ) {
+            console.log("BLUE RANDOM WINNER: " + BluePokemon.name);
+            return true;
+        }
+        else {
+            console.log("RED RANDOM WINNER: " + RedPokemon.name);
+            return false;
+        }
+    }
+
+
     const chooseWinner = () => {
-        if (Math.random() < 0.5) {  // If blue wins
+        if ( compareEffectiveness() ) {  // If blue wins
             console.log("Blue Chosen as winner")
             setBlueWins(true)
             setWinMessage("Blue's " + capitalize(BluePokemon.name) + " Wins!")
@@ -240,7 +441,7 @@ function BattleArea() {
             paramsBlueType1.append('side', "blue");
             axios.post( "http://localhost:3306/types/updateWins", paramsBlueType1 );
 
-            if( !(BluePokemon.SecondaryType === "null") )
+            if( BluePokemon.SecondaryType !== "null" )
             {
                 let paramsBlueType2 = new URLSearchParams();    // Update blue's secondary type wins
                 paramsBlueType2.append('type', BluePokemon.SecondaryType);
@@ -255,7 +456,7 @@ function BattleArea() {
             paramsRedType1.append('side', "red");
             axios.post( "http://localhost:3306/types/updateLosses", paramsRedType1 );
 
-            if( !(RedPokemon.SecondaryType === "null") )
+            if( RedPokemon.SecondaryType !== "null" )
             {
                 let paramsRedType2 = new URLSearchParams();    // Update red's secondary type losses
                 paramsRedType2.append('type', RedPokemon.SecondaryType);
@@ -265,7 +466,7 @@ function BattleArea() {
             }   
         }
         else {  // If red wins
-            console.log("Blue Chosen as winner")
+            console.log("Red chosen as winner")
             setBlueWins(false)
             setWinMessage("Red's " + capitalize(RedPokemon.name) + " Wins!")
             setNumRedWins(numRedWins+1)
@@ -293,7 +494,7 @@ function BattleArea() {
             paramsRedType1.append('side', "red");
             axios.post( "http://localhost:3306/types/updateWins", paramsRedType1 );
 
-            if( !(RedPokemon.SecondaryType === "null") )
+            if( RedPokemon.SecondaryType !== "null" )
             {
                 let paramsRedType2 = new URLSearchParams();    // Update red's secondary type wins
                 paramsRedType2.append('type', RedPokemon.SecondaryType);
@@ -308,7 +509,7 @@ function BattleArea() {
             paramsBlueType1.append('side', "blue");
             axios.post( "http://localhost:3306/types/updateLosses", paramsBlueType1 );
 
-            if( !(BluePokemon.SecondaryType === "null") )
+            if( BluePokemon.SecondaryType !== "null" )
             {
                 let paramsBlueType2 = new URLSearchParams();    // Update blue's secondary type losses
                 paramsBlueType2.append('type', BluePokemon.SecondaryType);
