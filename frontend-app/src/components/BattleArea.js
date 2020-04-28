@@ -4,6 +4,7 @@ import LayeredImage from "react-layered-image";
 import './../css/BattleArea.css';
 import TrainerBlue from '../assets/BluePlayerTrainer.png';
 import TrainerRed from '../assets/RedPlayerTrainer.png';
+import TrainerRed2 from '../assets/RedPlayerTrainer2.png';
 import Explosion from '../assets/explosion_noloop.gif';
 import PokeBallTossRed from '../assets/pokeball_toss_red.gif';
 import PokeBallTossBlue from '../assets/pokeball_toss_blue.gif';
@@ -42,7 +43,7 @@ function BattleArea() {
     const BlueStyle = {
         position: "absolute",   //absolute
         top: 400,   //400
-        right: 700, //700   
+        right: 750, //700   
         bottom: 0,  //0
         left: 0,    //0
         display: "flex",
@@ -54,7 +55,7 @@ function BattleArea() {
         top: 0,
         right: 0,
         bottom: 100,
-        left: 600,
+        left: 700,      //600
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -636,8 +637,8 @@ function BattleArea() {
                 {showPokeballs(false)}
                 <div align="left">
                     <div class="RedSpriteContainer" align="right">
-                        
-                        <img src={TrainerRed} alt="Red Trainer Sprite" hspace="0"  vspace="0" width="400" height="400" />
+                         
+                        <img src={TrainerRed2} alt="Red Trainer Sprite" hspace="0"  vspace="0" width="300" height="400" />
                         <div style={RedStyle}>
                             <LayeredImage layers={RedLayers} style={{ width: 450 }} />
                         </div>
