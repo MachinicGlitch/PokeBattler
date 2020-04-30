@@ -15,11 +15,9 @@ var corsOptions ={
 app.use(express.json());
 app.use(cors(corsOptions))
 
-
 var routes = require('./app/routes/routes');
 
 routes(app);
-
 
 app.listen(port, (err)=>{
   if (err) {

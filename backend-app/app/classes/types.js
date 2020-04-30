@@ -1,7 +1,11 @@
 let connection = require("./../../Connection.js");
+
+// Pokedex acts as the connection to the PokeAPI
 var Pokedex = require("pokedex-promise-v2");
 var P = new Pokedex();
 
+
+// Returns info about the requested type
 exports.getType = function (req, res) {
   P.getTypeByName(req.params.type)
     .then(function (response) {
@@ -13,6 +17,7 @@ exports.getType = function (req, res) {
     });
 };
 
+// Returns all data from the Types table ordered by wins
 exports.getTypeWins = function (req, res) {
   var sql = "SELECT * FROM Types Order By wins DESC";
   connection.query(sql, function (err, response, fields) {
@@ -21,6 +26,7 @@ exports.getTypeWins = function (req, res) {
   connection.end;
 };
 
+// Inserts a new type with data into the Types table
 exports.insertType = function (req, res) {
   var sql =
     "INSERT INTO Types (type, wins, losses, times_chosen)" +
@@ -36,6 +42,7 @@ exports.insertType = function (req, res) {
   connection.end;
 };
 
+// Increments a given type's wins by one
 exports.updateTypeWins = function (req, res) {
   var sql = "UPDATE Types SET wins = wins + 1 WHERE type = ?";
   console.log("Incrementing " + req.body.side + " " + req.body.type + " (" + req.body.name +")'s wins");
@@ -45,6 +52,7 @@ exports.updateTypeWins = function (req, res) {
   connection.end;
 };
 
+// Increments a given type's losses by one
 exports.updateTypeLosses = function (req, res) {
   var sql = "UPDATE Types SET losses = losses + 1 WHERE type = ?";
   console.log(
@@ -56,6 +64,7 @@ exports.updateTypeLosses = function (req, res) {
   connection.end;
 };
 
+// Increments a given type's times_chosen by one
 exports.updateTypeTimesChosen = function (req, res) {
   var sql = "UPDATE Types SET times_chosen = times_chosen + 1 WHERE type = ?";
   console.log(

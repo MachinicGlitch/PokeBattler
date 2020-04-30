@@ -8,16 +8,17 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 module.exports = function(app){
   
+  // Pokemon 
   app.route('/pokemon/:id')
     .get(pokemon.getPokemon)
 
 
+  // battles
   app.route('/battles')
     .get(urlencodedParser, battles.getBattles)
 
   app.route('/battles/top10BestStreaks')
     .get(urlencodedParser, battles.getTop10BestStreaks)
-
 
   app.route('/battles/insert')
     .post(urlencodedParser, battles.insertPokemon)
@@ -35,6 +36,7 @@ module.exports = function(app){
     .post(urlencodedParser, battles.updatePokemonBestStreak)
 
 
+  // types
   app.route('/types/:type')
     .get(types.getType)
 
@@ -54,6 +56,7 @@ module.exports = function(app){
     .post(urlencodedParser, types.updateTypeTimesChosen)
 
 
+  // trainers
   app.route('/trainers')
     .get(urlencodedParser, trainers.getTrainers)
 
