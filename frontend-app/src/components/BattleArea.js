@@ -1,22 +1,18 @@
 import React from 'react';
 import axios from 'axios';
 import LayeredImage from "react-layered-image";
-import './../css/BattleArea.css';
 import TrainerBlue from '../assets/BluePlayerTrainer.png';
-import TrainerRed from '../assets/RedPlayerTrainer.png';
 import TrainerRed2 from '../assets/RedPlayerTrainer2.png';
-import Explosion from '../assets/explosion_noloop.gif';
 import PokeBallTossRed from '../assets/pokeball_toss_red.gif';
 import PokeBallTossBlue from '../assets/pokeball_toss_blue.gif';
 import PokePlatform from '../assets/background.png';
-import Transparent from '../assets/transparent.png';
 import winBall from '../assets/winPoke.png';
 import blankBall from '../assets/losePoke.png';
 import Pokewalker from '../assets/Pokewalker.png';
+import './../css/BattleArea.css';
 
 
 function BattleArea() {
-    
     let [winMessage, setWinMessage] = React.useState('Get Ready Trainers!');
     let [counter, setCounter] = React.useState(10);
     let [numBlueWins, setNumBlueWins] = React.useState(0);
@@ -41,28 +37,28 @@ function BattleArea() {
         SecondaryType: ''
        });
     const BlueStyle = {
-        position: "absolute",   //absolute
-        top: 400,   //400
-        right: 750, //700   
-        bottom: 0,  //0
-        left: 0,    //0
+        position: "absolute", 
+        top: 400,
+        right: 750,  
+        bottom: 0, 
+        left: 0,  
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         };
     const RedStyle = {
-        position: "absolute",     //absolute
+        position: "absolute", 
         top: 0,
         right: 0,
         bottom: 100,
-        left: 700,      //600
+        left: 700,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
     };
+
     var BluePokemonSpriteBack = (Number) (BluePokemon.id);
     var RedPokemonSpriteFront = (Number) (RedPokemon.id);
-
     const BlueLayers = [
         PokePlatform, "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/" + BluePokemonSpriteBack + ".png", PokeBallTossBlue
     ];
@@ -70,8 +66,10 @@ function BattleArea() {
         PokePlatform, "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + RedPokemonSpriteFront + ".png", PokeBallTossRed
     ];
 
+
+    // This function manages the timer as it counts down from 10 to 0, handling different calls 
+    // when the counter reaches different milestones.  
     React.useEffect(() => {
-        
         if( counter === 10 )
         {
             if( blueWins === null) {
@@ -93,32 +91,33 @@ function BattleArea() {
         }
 
         if( counter === 8 ) {
+            // Reset pokemon effectiveness for new round
             setBlueEffectiveness(1);
             setRedEffectiveness(1);
 
             if( blueWins === null ) {
                 console.log("Start of counter");
             }
-            else if( numBlueWins === 3 ) {       // blue pokeball counter
-                console.log("Blue wins match, resetting counters");
+            else if( numBlueWins === 3 ) {       
+                console.log("Blue wins match, resetting counters and fetching new pokemon");
                 setNumBlueWins(0);
                 setNumRedWins(0);
                 getPokemon(true);
                 getPokemon(false);
             }
-            else if( numRedWins === 3 ) {   // red pokeball counter
-                console.log("Red wins match, resetting counters");
+            else if( numRedWins === 3 ) {   
+                console.log("Red wins match, resetting counters and fetching new pokemon");
                 setNumBlueWins(0);
                 setNumRedWins(0);
                 getPokemon(true);
                 getPokemon(false);
             } 
-            else if( blueWins ) {
-                console.log("Blue wins round, resetting red pokemon");
+            else if( blueWins ) {   // If blue won current round
+                console.log("Blue wins round, fetching new red pokemon");
                 getPokemon(false);
             }
-            else if( !blueWins ) {
-                console.log("Red wins round, resetting blue pokemon");
+            else if( !blueWins ) {  // If red won current round
+                console.log("Red wins round, fetching new blue pokemon");
                 getPokemon(true);
             }
         } 
@@ -127,7 +126,7 @@ function BattleArea() {
             setWinMessage("Fight!")
         }
 
-        if ( counter === 3 ) {
+        if ( counter === 3 ) {  // Calculate effectiveness early to prevent stuttering once the counter reaches 0
             calculateEffectiveness()
         }
 
@@ -137,9 +136,12 @@ function BattleArea() {
             setCounter(10)
         }
 
-    const timer = counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
+        const timer = counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
+        return () => clearInterval(timer);
     }, [counter]);
 
+
+    // This function gets a random pokemon between 1 and 151 to use for red or blue's side
     const getPokemon = ( isBlue ) => {
         axios.get( "http://localhost:3306/pokemon/" + (Math.floor(Math.random() * 151) + 1) )
             .then(res => {
@@ -219,10 +221,11 @@ function BattleArea() {
             .catch((error) => {
                 console.log(error);
             })
-
     }
 
 
+    // This function takes the name of a type and the side it belongs to to calculate 
+    // the effectiveness it has against its opponent 
     const checkEffectiveness = async ( typeName, side ) =>  {
         await axios.get( "http://localhost:3306/types/" + typeName )
             .then(res => {
@@ -230,13 +233,12 @@ function BattleArea() {
                 console.log(typeName + " data type relations")
                 console.log(data)
 
-                let effectiveness = 1;
-
-                let notFound = true;
+                let effectiveness = 1;  // keeps track of effectiveness in case opponent has multiple types
+                let notFound = true;    // tracks whether opponents type has a relation, as each type will be in the data once or not at all
 
                 if( side === "blue" ) { // If the side is blue
                     // Caclulate the Effectiveness against red's first type
-                    for( let i = 0; i < data.double_damage_to.length && notFound; i++ ) {
+                    for( let i = 0; i < data.double_damage_to.length && notFound; i++ ) {   // Search if opponent take's double damage
                         if( data.double_damage_to[i].name === RedPokemon.PrimaryType )
                         {
                             console.log(typeName + " x2 vs " + data.double_damage_to[i].name);
@@ -244,29 +246,30 @@ function BattleArea() {
                             effectiveness *= 2;
                         }
                     }
-                    for( let i = 0; i < data.half_damage_to.length && notFound; i++ ) {
+                    for( let i = 0; i < data.half_damage_to.length && notFound; i++ ) {     // Search if opponent take's half damage
                         if( data.half_damage_to[i].name === RedPokemon.PrimaryType ) {
                             console.log(typeName + " x1/2 vs " + data.half_damage_to[i].name);
                             notFound = false;
                             effectiveness *= .5;
                         }
                     }
-                    for( let i = 0; i < data.no_damage_to.length && notFound; i++ ) {
+                    for( let i = 0; i < data.no_damage_to.length && notFound; i++ ) {       // Search if opponent take's no damage
                         if( data.no_damage_to[i].name === RedPokemon.PrimaryType ) {
                             console.log(typeName + " x0 vs " + data.no_damage_to[i].name);
                             notFound = false;
                             effectiveness *= 0;
                         }
                     }
-                    if( notFound ) { 
+                    if( notFound ) {    // If there is no special relation
                         console.log(typeName + " x1 vs " + RedPokemon.PrimaryType);
                     }
                     
+                    // reset not found in case of red having second type
                     notFound = true;
 
                     if( RedPokemon.SecondaryType !== "null" ) { 
                         // Caclulate the Effectiveness against red's second type
-                        for( let i = 0; i < data.double_damage_to.length && notFound; i++ ) {
+                        for( let i = 0; i < data.double_damage_to.length && notFound; i++ ) {   // Search if opponent take's double damage
                             if( data.double_damage_to[i].name === RedPokemon.SecondaryType )
                             {
                                 console.log(typeName + " x2 vs " + data.double_damage_to[i].name);
@@ -274,21 +277,21 @@ function BattleArea() {
                                 effectiveness *= 2;
                             }
                         }
-                        for( let i = 0; i < data.half_damage_to.length && notFound; i++ ) {
+                        for( let i = 0; i < data.half_damage_to.length && notFound; i++ ) {   // Search if opponent take's half damage
                             if( data.half_damage_to[i].name === RedPokemon.SecondaryType ) {
                                 console.log(typeName + " x1/2 vs " + data.half_damage_to[i].name);
                                 notFound = false;
                                 effectiveness *= .5;
                             }
                         }
-                        for( let i = 0; i < data.no_damage_to.length && notFound; i++ ) {
+                        for( let i = 0; i < data.no_damage_to.length && notFound; i++ ) {   // Search if opponent take's no damage
                             if( data.no_damage_to[i].name === RedPokemon.SecondaryType ) {
                                 console.log(typeName + " x0 vs " + data.no_damage_to[i].name);
                                 notFound = false;
                                 effectiveness *= 0;
                             }
                         }
-                        if( notFound ) { 
+                        if( notFound ) {     // If there is no special relation
                             console.log(typeName + " x1 vs " + RedPokemon.SecondaryType);
                         }
                     }
@@ -299,7 +302,7 @@ function BattleArea() {
                 }
                 else {  // If the side is Red
                     // Caclulate the Effectiveness against blue's first type
-                    for( let i = 0; i < data.double_damage_to.length && notFound; i++ ) {
+                    for( let i = 0; i < data.double_damage_to.length && notFound; i++ ) {   // Search if opponent take's double damage
                         if( data.double_damage_to[i].name === BluePokemon.PrimaryType )
                         {
                             console.log(typeName + " x2 vs " + data.double_damage_to[i].name);
@@ -307,29 +310,30 @@ function BattleArea() {
                             effectiveness *= 2;
                         }
                     }
-                    for( let i = 0; i < data.half_damage_to.length && notFound; i++ ) {
+                    for( let i = 0; i < data.half_damage_to.length && notFound; i++ ) {   // Search if opponent take's half damage
                         if( data.half_damage_to[i].name === BluePokemon.PrimaryType ) {
                             console.log(typeName + " x1/2 vs " + data.half_damage_to[i].name);
                             notFound = false;
                             effectiveness *= .5;
                         }
                     }
-                    for( let i = 0; i < data.no_damage_to.length && notFound; i++ ) {
+                    for( let i = 0; i < data.no_damage_to.length && notFound; i++ ) {   // Search if opponent take's no damage
                         if( data.no_damage_to[i].name === BluePokemon.PrimaryType ) {
                             console.log(typeName + " x0 vs " + data.no_damage_to[i].name);
                             notFound = false;
                             effectiveness *= 0;
                         }
                     }
-                    if( notFound ) { 
+                    if( notFound ) {      // If there is no special relation
                         console.log(typeName + " x1 vs " + BluePokemon.PrimaryType);
                     }
 
+                    // reset not found in case of blue having second type
                     notFound = true;
 
                     if( BluePokemon.SecondaryType !== "null" ){
                         // Caclulate the Effectiveness against blue's second type
-                        for( let i = 0; i < data.double_damage_to.length && notFound; i++ ) {
+                        for( let i = 0; i < data.double_damage_to.length && notFound; i++ ) {   // Search if opponent take's double damage
                             if( data.double_damage_to[i].name === BluePokemon.SecondaryType )
                             {
                                 console.log(typeName + " x2 vs " + data.double_damage_to[i].name);
@@ -337,21 +341,21 @@ function BattleArea() {
                                 effectiveness *= 2;
                             }
                         }
-                        for( let i = 0; i < data.half_damage_to.length && notFound; i++ ) {
+                        for( let i = 0; i < data.half_damage_to.length && notFound; i++ ) {   // Search if opponent take's half damage
                             if( data.half_damage_to[i].name === BluePokemon.SecondaryType ) {
                                 console.log(typeName + " x1/2 vs " + data.half_damage_to[i].name);
                                 notFound = false;
                                 effectiveness *= .5
                             }
                         }
-                        for( let i = 0; i < data.no_damage_to.length && notFound; i++ ) {
+                        for( let i = 0; i < data.no_damage_to.length && notFound; i++ ) {   // Search if opponent take's no damage
                             if( data.no_damage_to[i].name === BluePokemon.SecondaryType ) {
                                 console.log(typeName + " x0 vs " + data.no_damage_to[i].name);
                                 notFound = false;
                                 effectiveness *= 0;
                             }
                         }
-                        if( notFound ) { 
+                        if( notFound ) {      // If there is no special relation
                             console.log(typeName + " x1 vs " + BluePokemon.SecondaryType);
                         } 
                     }  
@@ -368,9 +372,8 @@ function BattleArea() {
     }
 
 
-
+    // This function calls check effectiveness for each of red and blue's types in order to get their total effectiveness
     const calculateEffectiveness = async () => {
-
 
         await checkEffectiveness( BluePokemon.PrimaryType, "blue" );
         if( BluePokemon.SecondaryType !== "null" )
@@ -386,8 +389,8 @@ function BattleArea() {
     }
 
 
+    // This function compares red and blue's effectiveness, if they are the same then the result is random
     const compareEffectiveness = () => {
-
         console.log("Blue: ");
         console.log(BlueEffectiveness);
         console.log("Red: ");
@@ -412,6 +415,8 @@ function BattleArea() {
     }
 
 
+    // This function calls compareEffectiveness() to decide the winner then makes several calls 
+    // to store information about the pokemon in the database
     const chooseWinner = () => {
         if ( compareEffectiveness() ) {  // If blue wins
             console.log("Blue Chosen as winner")
@@ -521,6 +526,13 @@ function BattleArea() {
         }
     }
 
+    // This capitalizes the pokemon's name for the win message
+    const capitalize = ( s ) => {
+        return s.charAt(0).toUpperCase() + s.slice(1)
+    }
+
+    // This function manages the html for the pokeball round counters for either trainer depending on
+    // their number of wins
     const pokeballRow = ( numWon ) => {
         if ( numWon === 0 ) {
             return (
@@ -561,100 +573,56 @@ function BattleArea() {
     }
 
 
+    // This function calls pokeballRow for both trainers depending on their number of wins to display
+    // the round counters
     const showPokeballs = ( isBlue ) => {
-        if( isBlue ) {
+        if( isBlue ) {  // If called for blue side
             if(numBlueWins === 0) {
-                return (
-                    <div className="BluePokeWins">
-                        { pokeballRow(0) }
-                    </div>
-                )
+                return <div className="BluePokeWins"> { pokeballRow(0) } </div>
             }
             else if(numBlueWins === 1) {
-                return (
-                    <div className="BluePokeWins">
-                        { pokeballRow(1) }
-                    </div>
-                )
+                return <div className="BluePokeWins"> { pokeballRow(1) } </div>
             }
             else if(numBlueWins === 2) {
-                return (
-                    <div className="BluePokeWins">
-                        { pokeballRow(2) }
-                    </div>
-                )
+                return <div className="BluePokeWins"> { pokeballRow(2) } </div>
             }
             else {
-                return (
-                    <div className="BluePokeWins">
-                        { pokeballRow(3) }
-                    </div>
-                )
+                return <div className="BluePokeWins"> { pokeballRow(3) } </div>
             }
         }
-        else {
+        else {  // If called for red side
             if(numRedWins === 0) {
-                return (
-                    <div className="RedPokeWins">
-                        { pokeballRow(0) }
-                    </div>
-                )
+                return <div className="RedPokeWins"> { pokeballRow(0) } </div>
             }
             else if(numRedWins === 1) {
-                return (
-                    <div className="RedPokeWins">
-                        { pokeballRow(1) }
-                    </div>
-                )
+                return <div className="RedPokeWins"> { pokeballRow(1) } </div>
             }
             else if(numRedWins === 2) {
-                return (
-                    <div className="RedPokeWins">
-                        { pokeballRow(2) }
-                    </div>
-                )
+                return <div className="RedPokeWins"> { pokeballRow(2) } </div>
             }
             else {
-                return (
-                    <div className="RedPokeWins">
-                        { pokeballRow(3) }
-                    </div>
-                )
+                return <div className="RedPokeWins"> { pokeballRow(3) } </div>
             }
         }
-    }
-
-    const capitalize = ( s ) => {
-        return s.charAt(0).toUpperCase() + s.slice(1)
     }
 
     
     return (
         <div className="MainField">
-
                 <p> { winMessage } </p>
                 {showPokeballs(true)}
                 {showPokeballs(false)}
                 <div align="left">
                     <div class="RedSpriteContainer" align="right">
-                         
                         <img src={TrainerRed2} alt="Red Trainer Sprite" hspace="0"  vspace="0" width="300" height="400" />
                         <div style={RedStyle}>
                             <LayeredImage layers={RedLayers} style={{ width: 450 }} />
                         </div>
                     </div>
-                    {
                     <img src={TrainerBlue} alt="Blue Trainer Sprite" hspace="30" vspace="0" align="top" width="250" height="230" />
-                    }
-                    
                     <div style={BlueStyle}>
                         <LayeredImage layers={BlueLayers} style={{ width: 450 }} />
                     </div>
-
-                    {
-                    <img src= {Transparent} width="200" height="200" />
-                    }
-                    
                 </div>
               <div class="container">
                  <img src = {Pokewalker} alt="Timer" width="150" height="150" display="hidden"/>

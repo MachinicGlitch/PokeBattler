@@ -2,33 +2,22 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-  /* align-items: center; */
-   /* padding-right: 1000px;  */
+.Header {
+  height: 12vh;
+  background-color: #2a2a32;
+  line-height: 2.5em;
+  text-align: center;
+  font-size: 230%;
+  color: #ffcb05;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 5s linear;
-  }
+.Logo {
+  height: 12vh;
 }
 
-.App-header {
-  height: 70vh;
-  background: linear-gradient(105deg, #236b8e 50%, #ee6363 50%);
-}
-
-.App-body {
-  background-color: #282c34;
-  min-height: 50vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.audio{
+  padding-left: 50%;
+  padding-bottom: 1%;
 }
 
 .Border {
@@ -53,35 +42,19 @@
   height: 32px;
 }
 
-.Statistics {
-  padding: 70px 8px 32px 8px;
-  background: #2a2a32;
-  height: 100%;
-}
 
-.App-link {
-  color: #61dafb;
-}
 
-.GraphTabs {
-  background-color: #2a2a32;
-  margin-top: 0%;
-}
-.Header {
-  height: 12vh;
-  background-color: #2a2a32;
-  line-height: 2.5em;
-  text-align: center;
-  font-size: 230%;
-  color: #ffcb05;
-}
 
-.Logo {
-  height: 12vh;
-}
 
-.audio{
-  /* padding-left: 20%; */
-  padding-left: 50%;
-  padding-bottom: 1%;
-}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -42,8 +42,8 @@ class WinStreakByPokemon extends Component {
               "#FCC201",  //gold
               "#D8D8D8",  //silver
               "#CD7F32",  //bronze
-              "#17A0DA",
-              "#148FC3",
+              "#17A0DA",  // | Blue Gradient
+              "#148FC3",  // V 
               "#1382B1",
               "#1179A4",
               "#0F6C93",

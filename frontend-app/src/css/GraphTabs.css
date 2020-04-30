@@ -1,6 +1,18 @@
+.GraphTabs {
+  background-color: #2a2a32;
+  margin-top: 0%;
+}
+
+.Statistics {
+  padding: 70px 8px 32px 8px;
+  background: #2a2a32;
+  height: 100%;
+}
+
 .doughnut {
   padding-bottom: 20px;
 }
+
 .pie {
   padding-bottom: 20px;
 }

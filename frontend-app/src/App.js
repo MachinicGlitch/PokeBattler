@@ -1,11 +1,8 @@
 import React from "react";
-import BattleArea from "./../components/BattleArea";
-import GraphTabs from "./../components/GraphTabs";
-import PokmonBattler from "../assets/PokmonBattler.png";
-import "./../css/App.css";
-import OPSong from '../assets/101-opening.mp3';
-import OPSongRemix from '../assets/pokeBattlerMusic.mp3';
-import Part5 from '../assets/Fighting Gold.mp3';
+import BattleArea from "./components/BattleArea";
+import GraphTabs from "./components/GraphTabs";
+import PokmonBattler from "./assets/PokmonBattler.png";
+import OPSongRemix from './assets/pokeBattlerMusic.mp3';
 
 
 function App() {
@@ -21,7 +18,6 @@ function App() {
       <div className="Border">
         <BattleArea />
       </div>
-
       <div className="GraphTabs">
         <GraphTabs />
       </div>

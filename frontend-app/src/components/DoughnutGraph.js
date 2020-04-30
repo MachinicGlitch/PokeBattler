@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import WinsByType from "./WinsByType.js";
 import "../css/Stats.css";
+
 class DoughnutGraph extends Component {
   render() {
     return (
