@@ -56,16 +56,6 @@ Structure is detailed throughout the folders in their respective README.md's
 
 ## Developers
 
-This application was developed by Team Scrambled Spring 2019:
-
-- Darin Brockmann (<darinbrockmann@discover.com>)
--  (<@discover.com>)
--  (<@discover.com>)
--  (<@discover.com>)
--  (<@discover.com>)
--  (<@discover.com>)
--  (<@discover.com>)
-
-If you have any questions regarding the status of this project, or how we developed various aspects, feel free to reach out to us.
+This application was developed by Team Scrambled Spring 2019
 
 Copyright: 2019, Discover Financial Services, LLC
